@@ -144,6 +144,7 @@ void onKeybind(bool down, ActionID id) {
 $execute{
 
   #ifdef GEODE_IS_WINDOWS
+  #ifdef GEODE_IS_MACOS
 
     BindManager * bm = BindManager::get();
 
@@ -235,3 +236,4 @@ $execute{
 
   #endif
 }
+#endif
