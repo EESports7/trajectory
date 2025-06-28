@@ -64,10 +64,8 @@ namespace keybinds {
 
 #endif
 
-using namespace keybinds;
-
-#if !defined(GEODE_IS_IOS) && !defined(GEODE_IS_MACOS)
-void onKeybind(bool down, ActionID id) {
+#if !defined(GEODE_IS_IOS)
+void onKeybind(bool down, keybinds::ActionID id) {
 #if defined(GEODE_IS_WINDOWS) || defined(GEODE_IS_MACOS)
 
   auto& g = Global::get();
