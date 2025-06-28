@@ -68,8 +68,7 @@ using namespace keybinds;
 
 #if !defined(GEODE_IS_IOS) && !defined(GEODE_IS_MACOS)
 void onKeybind(bool down, ActionID id) {
-#ifdef GEODE_IS_WINDOWS
-#ifdef GEODE_IS_MACOS
+#if defined(GEODE_IS_WINDOWS) || defined(GEODE_IS_MACOS)
 
   auto& g = Global::get();
 
@@ -137,9 +136,9 @@ void onKeybind(bool down, ActionID id) {
     }
   }
 
-#endif
+#endif // GEODE_IS_WINDOWS || GEODE_IS_MACOS
 }
-#endif
+#endif // !GEODE_IS_IOS && !GEODE_IS_MACOS
 
 $execute{
 
