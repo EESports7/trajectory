@@ -1,4 +1,3 @@
-
 #include "includes.hpp"
 #include "ui/record_layer.hpp"
 #include "ui/game_ui.hpp"
@@ -67,6 +66,7 @@ namespace keybinds {
 
 using namespace keybinds;
 
+#if !defined(GEODE_IS_IOS) && !defined(GEODE_IS_MACOS)
 void onKeybind(bool down, ActionID id) {
 #ifdef GEODE_IS_WINDOWS
 #ifdef GEODE_IS_MACOS
@@ -143,8 +143,8 @@ void onKeybind(bool down, ActionID id) {
 
 $execute{
 
-  #ifdef GEODE_IS_WINDOWS
-  #ifdef GEODE_IS_MACOS
+#ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_MACOS
 
     BindManager * bm = BindManager::get();
 
@@ -234,6 +234,7 @@ $execute{
         }, InvokeBindFilter(nullptr, (""_spr) + keybindIDs[i]));
     }
 
-  #endif
-}
 #endif
+#endif
+
+}
