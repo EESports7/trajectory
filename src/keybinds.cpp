@@ -138,9 +138,8 @@ void onKeybind(bool down, ActionID id) {
   }
 
 #endif
-#endif
-
 }
+#endif
 
 $execute{
 
