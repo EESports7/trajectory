@@ -25,6 +25,7 @@ std::string Utils::narrow(const wchar_t* str) {
     return result;
 
 #else
+#if !defined (GEODE_IS_IOS) && !defined (GEODE_IS_MACOS)
     int size = WideCharToMultiByte(CP_UTF8, 0, str, -1, nullptr, 0, nullptr, nullptr);
     if (size <= 0) {
         return "";
@@ -40,6 +41,7 @@ std::string Utils::narrow(const wchar_t* str) {
     delete[] buffer;
 
     return result;
+#endif
 #endif
 }
 
