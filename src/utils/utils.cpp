@@ -58,7 +58,7 @@ std::wstring Utils::widen(const char* str) {
     return result;
 
 #else
-
+#if !defined (GEODE_IS_IOS) && !defined (GEODE_IS_MACOS)
     if (str == nullptr) {
         return L"Widen Error";
     }
@@ -82,6 +82,7 @@ std::wstring Utils::widen(const char* str) {
     delete[] buffer;
     return result;
 
+#endif
 #endif
 }
 
