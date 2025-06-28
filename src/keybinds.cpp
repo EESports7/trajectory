@@ -11,10 +11,12 @@
 #include <Geode/modify/CCTouchDispatcher.hpp>
 
 #ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_MACOS
 
 #include <geode.custom-keybinds/include/Keybinds.hpp>
 #include <regex>
 
+#endif
 #endif
 
 const std::vector<std::string> keybindIDs = {
@@ -61,6 +63,11 @@ namespace keybinds {
   struct ActionID {};
 
 };
+
+#endif
+
+#if defined (GEODE_IS_WINDOWS) && defined (GEODE_IS_MACOS)
+using namespace keybinds;
 
 #endif
 
