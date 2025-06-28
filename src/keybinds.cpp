@@ -55,10 +55,21 @@ class $modify(CCKeyboardDispatcher) {
   }
 };
 
+#ifdef GEODE_IS_MOBILE
+
+namespace keybinds {
+
+  struct ActionID {};
+
+};
+
+#endif
+
 using namespace keybinds;
 
 void onKeybind(bool down, ActionID id) {
 #ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_MACOS
 
   auto& g = Global::get();
 
@@ -127,8 +138,8 @@ void onKeybind(bool down, ActionID id) {
   }
 
 #endif
-
 }
+#endif
 
 $execute{
 
