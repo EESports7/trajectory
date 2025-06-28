@@ -55,19 +55,8 @@ class $modify(CCKeyboardDispatcher) {
   }
 };
 
-#ifdef GEODE_IS_ANDROID
-
-namespace keybinds {
-
-  struct ActionID {};
-
-};
-
-#endif
-
 using namespace keybinds;
 
-#if !defined(GEODE_IS_IOS) && !defined(GEODE_IS_MACOS)
 void onKeybind(bool down, ActionID id) {
 #ifdef GEODE_IS_WINDOWS
 
@@ -138,8 +127,8 @@ void onKeybind(bool down, ActionID id) {
   }
 
 #endif
+
 }
-#endif
 
 $execute{
 
