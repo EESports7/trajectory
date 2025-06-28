@@ -109,7 +109,7 @@ struct PlayerData {
     DashRingObject* m_dashRing;
     double m_slopeStartTime;
     bool m_justPlacedStreak;
-    GameObject* m_maybeLastGroundObject;
+    CCNode* m_maybeLastGroundObject;
     cocos2d::CCDictionary* m_collisionLogTop;
     cocos2d::CCDictionary* m_collisionLogBottom;
     cocos2d::CCDictionary* m_collisionLogLeft;
@@ -177,8 +177,8 @@ struct PlayerData {
     double m_lastSpiderFlipTime;
     bool m_unkBool5;
     bool m_maybeIsVehicleGlowing;
-    bool m_gv0096;
-    bool m_gv0100;
+    bool m_switchWaveTrailColor;
+    bool m_practiceDeathEffect;
     double m_accelerationOrSpeed;
     double m_snapDistance;
     bool m_ringJumpRelated;
@@ -259,7 +259,7 @@ struct PlayerData {
     cocos2d::CCArray* m_touchingRings;
     GameObject* m_lastActivatedPortal;
     bool m_hasEverJumped;
-    bool m_ringOrStreakRelated;
+    bool m_hasEverHitRing;
     cocos2d::CCPoint m_position;
     bool m_isSecondPlayer;
     bool m_unkA99;
@@ -268,9 +268,9 @@ struct PlayerData {
     float m_unkAAC;
     float m_unkAngle1;
     float m_yVelocityRelated3;
-    bool m_gamevar0060;
+    bool m_defaultMiniIcon;
     bool m_swapColors;
-    bool m_gamevar0062;
+    bool m_switchDashFireColor;
     int m_followRelated;
     float m_unk838;
     int m_stateOnGround;
@@ -323,9 +323,9 @@ struct PlayerData {
     bool m_isOutOfBounds;
     float m_fallStartY;
     bool m_disablePlayerSqueeze;
-    bool m_robotHasRun3;
-    bool m_robotHasRun2;
-    bool m_item20;
+    bool m_robotAnimation1Enabled;
+    bool m_robotAnimation2Enabled;
+    bool m_spiderAnimationEnabled;
     bool m_ignoreDamage;
     bool m_enable22Changes;
 };

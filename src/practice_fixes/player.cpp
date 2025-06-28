@@ -106,8 +106,8 @@ PlayerData PlayerPracticeFixes::saveData(PlayerObject* player) {
     data.m_lastSpiderFlipTime = player->m_lastSpiderFlipTime;
     data.m_unkBool5 = player->m_unkBool5;
     data.m_maybeIsVehicleGlowing = player->m_maybeIsVehicleGlowing;
-    data.m_gv0096 = player->m_gv0096;
-    data.m_gv0100 = player->m_gv0100;
+    data.m_switchWaveTrailColor = player->m_switchWaveTrailColor;
+    data.m_practiceDeathEffect = player->m_practiceDeathEffect;
     data.m_accelerationOrSpeed = player->m_accelerationOrSpeed;
     data.m_snapDistance = player->m_snapDistance;
     data.m_ringJumpRelated = player->m_ringJumpRelated;
@@ -188,7 +188,7 @@ PlayerData PlayerPracticeFixes::saveData(PlayerObject* player) {
     data.m_touchingRings = player->m_touchingRings;
     data.m_lastActivatedPortal = player->m_lastActivatedPortal;
     data.m_hasEverJumped = player->m_hasEverJumped;
-    data.m_ringOrStreakRelated = player->m_ringOrStreakRelated;
+    data.m_hasEverHitRing = player->m_hasEverHitRing;
     data.m_position = player->m_position;
     data.m_isSecondPlayer = player->m_isSecondPlayer;
     data.m_unkA99 = player->m_unkA99;
@@ -197,9 +197,9 @@ PlayerData PlayerPracticeFixes::saveData(PlayerObject* player) {
     data.m_unkAAC = player->m_unkAAC;
     data.m_unkAngle1 = player->m_unkAngle1;
     data.m_yVelocityRelated3 = player->m_yVelocityRelated3;
-    data.m_gamevar0060 = player->m_gamevar0060;
+    data.m_defaultMiniIcon = player->m_defaultMiniIcon;
     data.m_swapColors = player->m_swapColors;
-    data.m_gamevar0062 = player->m_gamevar0062;
+    data.m_switchDashFireColor = player->m_switchDashFireColor;
     data.m_followRelated = player->m_followRelated;
     data.m_unk838 = player->m_unk838;
     data.m_stateOnGround = player->m_stateOnGround;
@@ -252,9 +252,9 @@ PlayerData PlayerPracticeFixes::saveData(PlayerObject* player) {
     data.m_isOutOfBounds = player->m_isOutOfBounds;
     data.m_fallStartY = player->m_fallStartY;
     data.m_disablePlayerSqueeze = player->m_disablePlayerSqueeze;
-    data.m_robotHasRun3 = player->m_robotHasRun3;
-    data.m_robotHasRun2 = player->m_robotHasRun2;
-    data.m_item20 = player->m_item20;
+    data.m_robotAnimation1Enabled = player->m_robotAnimation1Enabled;
+    data.m_robotAnimation2Enabled = player->m_robotAnimation2Enabled;
+    data.m_spiderAnimationEnabled = player->m_spiderAnimationEnabled;
     data.m_ignoreDamage = player->m_ignoreDamage;
     data.m_enable22Changes = player->m_enable22Changes;
     return data;
@@ -444,7 +444,7 @@ void PlayerPracticeFixes::applyData(PlayerObject* player, PlayerData data, bool 
     player->m_touchingRings = data.m_touchingRings;
     player->m_lastActivatedPortal = data.m_lastActivatedPortal;
     player->m_hasEverJumped = data.m_hasEverJumped;
-    player->m_ringOrStreakRelated = data.m_ringOrStreakRelated;
+    player->m_hasEverHitRing = data.m_hasEverHitRing;
     player->m_position = data.m_position;
     player->m_isSecondPlayer = data.m_isSecondPlayer;
     player->m_unkA99 = data.m_unkA99;
@@ -453,9 +453,9 @@ void PlayerPracticeFixes::applyData(PlayerObject* player, PlayerData data, bool 
     player->m_unkAAC = data.m_unkAAC;
     player->m_unkAngle1 = data.m_unkAngle1;
     player->m_yVelocityRelated3 = data.m_yVelocityRelated3;
-    player->m_gamevar0060 = data.m_gamevar0060;
+    player->m_defaultMiniIcon = data.m_defaultMiniIcon;
     player->m_swapColors = data.m_swapColors;
-    player->m_gamevar0062 = data.m_gamevar0062;
+    player->m_switchDashFireColor = data.m_switchDashFireColor;
     player->m_followRelated = data.m_followRelated;
     player->m_unk838 = data.m_unk838;
     player->m_stateOnGround = data.m_stateOnGround;
@@ -507,9 +507,9 @@ void PlayerPracticeFixes::applyData(PlayerObject* player, PlayerData data, bool 
     player->m_isOutOfBounds = data.m_isOutOfBounds;
     player->m_fallStartY = data.m_fallStartY;
     player->m_disablePlayerSqueeze = data.m_disablePlayerSqueeze;
-    player->m_robotHasRun3 = data.m_robotHasRun3;
-    player->m_robotHasRun2 = data.m_robotHasRun2;
-    player->m_item20 = data.m_item20;
+    player->m_robotAnimation1Enabled = data.m_robotAnimation1Enabled;
+    player->m_robotAnimation2Enabled = data.m_robotAnimation2Enabled;
+    player->m_spiderAnimationEnabled = data.m_spiderAnimationEnabled;
     player->m_ignoreDamage = data.m_ignoreDamage;
     player->m_enable22Changes = data.m_enable22Changes;
 

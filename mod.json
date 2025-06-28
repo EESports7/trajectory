@@ -1,22 +1,23 @@
 {
-	"geode": "4.4.0",
+	"geode": "4.6.2",
 	"gd": {
 		"win": "2.2074",
-		"android": "2.2074"
+		"mac": "2.2074",
+		"android": "2.2074",
+		"ios": "2.2074"
 	},
 	"version": "2.4.1",
 	"id": "zilko.xdbot",
 	"name": "xdBot",
 	"developer": "Zilko",
 	"description": "Best Free Bot fr",
-	"dependencies": [
-		{
-			"id": "geode.custom-keybinds",
-			"version": ">=v1.10.0",
+	"dependencies": {
+		"geode.custom-keybinds": {
+			"version": ">=1.10.4",
 			"importance": "required",
-			"platforms": ["win"]
+			"platforms": ["win", "mac"]
 		}
-	],
+	},
 	"settings": {
 		"button-setting": {
 			"type": "custom:button",
