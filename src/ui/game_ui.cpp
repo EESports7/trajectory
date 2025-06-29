@@ -18,7 +18,7 @@ class $modify(PlayLayer) {
             m_fields->frameLabel->setString(("Frame: " + std::to_string(Global::getCurrentFrame())).c_str());
         }
         #else
-        if (g.state != state::none && g.frameLabel && !g.renderer.recording) {
+        if (g.state != state::none && g.frameLabel) {
             m_fields->frameLabel->setString(("Frame: " + std::to_string(Global::getCurrentFrame())).c_str());
         }
         #endif
