@@ -60,8 +60,9 @@ class $modify(PlayLayer) {
 
   void pauseGame(bool b1) {
     Global::updateKeybinds();
-
+    #ifndef GEODE_IS_IOS
     if (!Global::get().renderer.tryPause()) return;
+    #endif
 
     auto& g = Global::get();
 
