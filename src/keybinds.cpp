@@ -10,13 +10,11 @@
 #include <Geode/modify/CCKeyboardDispatcher.hpp>
 #include <Geode/modify/CCTouchDispatcher.hpp>
 
-#ifdef GEODE_IS_WINDOWS
-#ifdef GEODE_IS_MACOS
+#if defined(GEODE_IS_WINDOWS) && defined(GEODE_IS_MACOS)
 
 #include <geode.custom-keybinds/include/Keybinds.hpp>
 #include <regex>
 
-#endif
 #endif
 
 const std::vector<std::string> keybindIDs = {
@@ -69,10 +67,7 @@ namespace keybinds {
 #if defined (GEODE_IS_WINDOWS) && defined (GEODE_IS_MACOS)
 using namespace keybinds;
 
-#endif
-
-#if !defined(GEODE_IS_IOS)
-void onKeybind(bool down, keybinds::ActionID id) {
+void onKeybind(bool down, ActionID id) {
 #if defined(GEODE_IS_WINDOWS) || defined(GEODE_IS_MACOS)
 
   auto& g = Global::get();
