@@ -84,9 +84,10 @@ void RenderSettingsLayer::onDefaults(CCObject*) {
 
 bool RenderSettingsLayer::setup() {
     setTitle("Render Settings");
+    bool usingApi = false;
 #ifndef GEODE_IS_IOS
-    bool usingApi = Renderer::shouldUseAPI();
-    #endif
+    usingApi = Renderer::shouldUseAPI();
+#endif
 
     cocos2d::CCPoint offset = (CCDirector::sharedDirector()->getWinSize() - m_mainLayer->getContentSize()) / 2;
     m_mainLayer->setPosition(m_mainLayer->getPosition() - offset);
