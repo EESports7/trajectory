@@ -130,9 +130,10 @@ class $modify(PlayLayer) {
     auto& g = Global::get();
 
     int frame = Global::getCurrentFrame();
-
+    #ifndef GEODE_IS_IOS
     if (!m_isPracticeMode)
       g.renderer.levelStartFrame = frame;
+    #endif
 
     if (g.restart && m_levelSettings->m_platformerMode && g.state != state::none)
       m_fields->delayedLevelRestart = frame + 2;
@@ -208,7 +209,7 @@ class $modify(BGLHook, GJBaseGameLayer) {
     }
 
     Global::updateSeed();
-
+    #ifndef GEODE_IS_IOS
     bool rendering = g.renderer.recording || g.renderer.recordingAudio;
 
     if (g.state != state::none || rendering) {
@@ -255,6 +256,7 @@ class $modify(BGLHook, GJBaseGameLayer) {
       handlePlaying(Global::getCurrentFrame());
 
   }
+  #endif
 
   void handleRecording(int frame) {
     auto& g = Global::get();
@@ -458,8 +460,10 @@ class $modify(PauseLayer) {
 
     Loader::get()->queueInMainThread([] {
       auto& g = Global::get();
+      #ifndef GEODE_IS_IOS
       if (g.renderer.recording) g.renderer.stop();
       if (g.renderer.recordingAudio) g.renderer.stopAudio();
+      #endif
     });
   }
 
@@ -470,8 +474,10 @@ class $modify(PauseLayer) {
     
     Loader::get()->queueInMainThread([] {
       auto& g = Global::get();
+      #ifndef GEODE_IS_IOS
       if (g.renderer.recording) g.renderer.stop();
       if (g.renderer.recordingAudio) g.renderer.stopAudio();
+      #endif
     });
   }
 
