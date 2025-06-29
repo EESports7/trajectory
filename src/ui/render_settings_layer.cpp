@@ -540,10 +540,10 @@ bool RenderSettingsLayer::setup() {
         musicSlider->m_groove->setOpacity(100);
         musicSlider->m_touchLogic->setOpacity(100);
     }
+#endif
 
     return true;
 }
-#endif
 
 void RenderSettingsLayer::onSlider(CCObject*) {
     Mod::get()->setSavedValue("render_sfx_volume", sfxSlider->getValue());
@@ -559,4 +559,4 @@ void RenderSettingsLayer::showInfoPopup(CCObject* obj) {
         msg.c_str(),
         "Ok"
     )->show();
-};
+}
