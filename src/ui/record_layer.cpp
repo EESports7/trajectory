@@ -259,6 +259,7 @@ void RecordLayer::togglePlaying(CCObject*) {
     this->updateTPS();
 }
 
+#ifndef GEODE_IS_IOS
 void RecordLayer::toggleRender(CCObject* btn) {
     if (!Renderer::toggle())
         static_cast<CCMenuItemToggler*>(btn)->toggle(true);
@@ -266,10 +267,11 @@ void RecordLayer::toggleRender(CCObject* btn) {
     if (Global::get().renderer.recordingAudio)
         static_cast<CCMenuItemToggler*>(btn)->toggle(false);
 }
-
+#else
 void RecordLayer::toggleRenderIOS(CCObject* btn) {
     FLAlertLayer::create("Info", "Rendering on iOS is not supported yet!", "OK")->show();
 }
+#endif
 
 void RecordLayer::onEditMacro(CCObject*) {
     MacroEditLayer::open();
