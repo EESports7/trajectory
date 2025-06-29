@@ -116,7 +116,9 @@ bool RenderSettingsLayer::setup() {
     bg->setContentSize({ 392, 55 });
     menu->addChild(bg);
 
+    #ifndef GEODE_IS_IOS
     if (usingApi) bg->setOpacity(40);
+    #endif
 
     CCLabelBMFont* lbl = CCLabelBMFont::create("Extra Args:", "bigFont.fnt");
     lbl->setPosition(ccp(-105, 88));
@@ -125,7 +127,9 @@ bool RenderSettingsLayer::setup() {
     lbl->setScale(0.325);
     menu->addChild(lbl);
 
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     argsInput = CCTextInputNode::create(150, 30, "args", "chatFont.fnt");
     argsInput->m_textField->setAnchorPoint({ 0.5f, 0.5f });
@@ -152,7 +156,9 @@ bool RenderSettingsLayer::setup() {
     bg->setContentSize({ 401, 55 });
     menu->addChild(bg);
     
+    #ifndef GEODE_IS_IOS
     if (usingApi) bg->setOpacity(40);
+    #endif
 
     lbl = CCLabelBMFont::create("Audio Args:", "bigFont.fnt");
     lbl->setPosition(ccp(-105, 55));
@@ -161,7 +167,9 @@ bool RenderSettingsLayer::setup() {
     lbl->setScale(0.325);
     menu->addChild(lbl);
     
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     audioArgsInput = CCTextInputNode::create(150, 30, "audio args", "chatFont.fnt");
     audioArgsInput->m_textField->setAnchorPoint({ 0.5f, 0.5f });
@@ -257,7 +265,9 @@ bool RenderSettingsLayer::setup() {
     lbl->setScale(0.325);
     menu->addChild(lbl);
     
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     onlySongToggle = CCMenuItemToggler::create(
         CCSprite::createWithSpriteFrameName("GJ_checkOff_001.png"),
@@ -276,7 +286,9 @@ bool RenderSettingsLayer::setup() {
     lbl->setScale(0.325);
     menu->addChild(lbl);
     
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     recordAudioToggle = CCMenuItemToggler::create(
         CCSprite::createWithSpriteFrameName("GJ_checkOff_001.png"),
@@ -295,7 +307,9 @@ bool RenderSettingsLayer::setup() {
     lbl->setScale(0.325);
     menu->addChild(lbl);
     
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     fadeInInput = TextInput::create(50.f, "s", "bigFont.fnt");
     fadeInInput->setScale(0.5f);
@@ -315,11 +329,13 @@ bool RenderSettingsLayer::setup() {
     toggle->setID("render_fade_in");
     menu->addChild(toggle);
 
+    #ifndef GEODE_IS_IOS
     if (usingApi) {
         toggle->setCascadeOpacityEnabled(true);
         toggle->setEnabled(false);
         toggle->setOpacity(100);
     }
+    #endif
 
     lbl = CCLabelBMFont::create("Fade Out:", "bigFont.fnt");
     lbl->setPosition(ccp(25, -58));
@@ -327,8 +343,10 @@ bool RenderSettingsLayer::setup() {
     lbl->setOpacity(200);
     lbl->setScale(0.325);
     menu->addChild(lbl);
-    
+
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     lbl = CCLabelBMFont::create("File Extension:", "bigFont.fnt");
     lbl->setPosition(ccp(110, -5));
@@ -336,8 +354,10 @@ bool RenderSettingsLayer::setup() {
     lbl->setOpacity(200);
     lbl->setScale(0.3f);
     menu->addChild(lbl);
-    
+
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     extensionInput = TextInput::create(46.f, "", "chatFont.fnt");
     extensionInput->setScale(0.8f);
@@ -365,11 +385,13 @@ bool RenderSettingsLayer::setup() {
     toggle->setID("render_fade_out");
     menu->addChild(toggle);
 
+    #ifndef GEODE_IS_IOS
     if (usingApi) {
         toggle->setCascadeOpacityEnabled(true);
         toggle->setEnabled(false);
         toggle->setOpacity(100);
     }
+    #endif
 
     lbl = CCLabelBMFont::create("Hide Endscreen:", "bigFont.fnt");
     lbl->setPosition(ccp(-105, -83));
@@ -410,7 +432,9 @@ bool RenderSettingsLayer::setup() {
     lbl->setPosition({188, 42});
     menu->addChild(lbl);
     
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     sfxSlider = Slider::create(
 		this,
@@ -427,8 +451,10 @@ bool RenderSettingsLayer::setup() {
     lbl->setScale(0.475f);
     lbl->setPosition({188, 87});
     menu->addChild(lbl);
-    
+
+    #ifndef GEODE_IS_IOS
     if (usingApi) lbl->setOpacity(90);
+    #endif
 
     musicSlider = Slider::create(
 		this,
@@ -467,6 +493,7 @@ bool RenderSettingsLayer::setup() {
     btn->setTag(0);
     menu->addChild(btn);
 
+    #ifndef GEODE_IS_IOS
     if (usingApi) {
         argsInput->m_textLabel->setOpacity(100);
         audioArgsInput->m_textLabel->setOpacity(100);
@@ -507,6 +534,7 @@ bool RenderSettingsLayer::setup() {
 
     return true;
 }
+#endif
 
 void RenderSettingsLayer::onSlider(CCObject*) {
     Mod::get()->setSavedValue("render_sfx_volume", sfxSlider->getValue());
