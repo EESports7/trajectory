@@ -210,16 +210,15 @@ class $modify(BGLHook, GJBaseGameLayer) {
     }
 
     Global::updateSeed();
-    #ifndef GEODE_IS_IOS
     bool rendering = g.renderer.recording || g.renderer.recordingAudio;
 
     if (g.state != state::none || rendering) {
-
+    #ifndef GEODE_IS_IOS
       if (!g.firstAttempt) {
         g.renderer.dontRender = false;
         g.renderer.dontRecordAudio = false;
       }
-     #endif
+    #endif
       int frame = Global::getCurrentFrame();
       if (frame > 2 && g.firstAttempt && g.macro.xdBotMacro) {
         g.firstAttempt = false;
