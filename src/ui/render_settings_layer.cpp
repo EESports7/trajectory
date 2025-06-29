@@ -84,7 +84,7 @@ void RenderSettingsLayer::onDefaults(CCObject*) {
 
 bool RenderSettingsLayer::setup() {
     setTitle("Render Settings");
-    #ifndef GEODE_IS_IOS
+#ifndef GEODE_IS_IOS
     bool usingApi = Renderer::shouldUseAPI();
     #endif
 
