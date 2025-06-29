@@ -243,12 +243,19 @@ class $modify(BGLHook, GJBaseGameLayer) {
     int frame = Global::getCurrentFrame();
     g.previousFrame = frame;
 
-    if (g.macro.xdBotMacro && g.restart && !m_levelEndAnimationStarted) {
-      if ((m_levelSettings->m_platformerMode && g.state != state::none) || g.renderer.recording || g.renderer.recordingAudio)
-        return pl->resetLevelFromStart();
-      else
-        return pl->resetLevel();
-    }
+if (g.macro.xdBotMacro && g.restart && !m_levelEndAnimationStarted) {
+  #ifndef GEODE_IS_IOS
+  if ((m_levelSettings->m_platformerMode && g.state != state::none || g.renderer.recordingAudio))
+  return pl->resetLevelFromStart();
+  else
+  return pl->resetLevel();
+  #else
+  if (m_levelSettings->m_platformerMode && g.state != state::none)
+  return pl->resetLevelFromStart();
+  else
+  return pl->resetLevel();
+  #endif
+}
 
     if (g.state == state::recording)
       handleRecording(frame);
