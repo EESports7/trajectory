@@ -224,14 +224,14 @@ class $modify(BGLHook, GJBaseGameLayer) {
         g.firstAttempt = false;
         #ifndef GEODE_IS_IOS
         if ((m_levelSettings->m_platformerMode || rendering) && !m_levelEndAnimationStarted)
-          return pl->resetLevelFromStart();
+            return pl->resetLevelFromStart();
         else if (!m_levelEndAnimationStarted)
-          return pl->resetLevel();
+            return pl->resetLevel();
+        #endif
       }
-      #endif
 
       if (g.previousFrame == frame && frame != 0 && g.macro.xdBotMacro)
-        return GJBaseGameLayer::processCommands(dt);
+          return GJBaseGameLayer::processCommands(dt);
 
     }
 
