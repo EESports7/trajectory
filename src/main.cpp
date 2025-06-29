@@ -213,19 +213,22 @@ class $modify(BGLHook, GJBaseGameLayer) {
     bool rendering = g.renderer.recording || g.renderer.recordingAudio;
 
     if (g.state != state::none || rendering) {
+      #ifndef GEODE_IS_IOS
       if (!g.firstAttempt) {
         g.renderer.dontRender = false;
         g.renderer.dontRecordAudio = false;
       }
+      #endif
       int frame = Global::getCurrentFrame();
       if (frame > 2 && g.firstAttempt && g.macro.xdBotMacro) {
         g.firstAttempt = false;
-
+        #ifndef GEODE_IS_IOS
         if ((m_levelSettings->m_platformerMode || rendering) && !m_levelEndAnimationStarted)
           return pl->resetLevelFromStart();
         else if (!m_levelEndAnimationStarted)
           return pl->resetLevel();
       }
+      #endif
 
       if (g.previousFrame == frame && frame != 0 && g.macro.xdBotMacro)
         return GJBaseGameLayer::processCommands(dt);
@@ -254,7 +257,6 @@ class $modify(BGLHook, GJBaseGameLayer) {
       handlePlaying(Global::getCurrentFrame());
 
   }
-  #endif
 
   void handleRecording(int frame) {
     auto& g = Global::get();
