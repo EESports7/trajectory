@@ -127,7 +127,7 @@ class $modify(CCParticleSystem) {
                 return;
         }
         #else
-        if (!g.renderer.recording && g.frameStepper) {
+        if (g.frameStepper) {
             if (g.stepFrameParticle != 0) {
                 CCParticleSystem::update(dt);
             }
