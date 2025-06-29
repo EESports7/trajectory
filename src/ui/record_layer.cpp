@@ -267,6 +267,10 @@ void RecordLayer::toggleRender(CCObject* btn) {
         static_cast<CCMenuItemToggler*>(btn)->toggle(false);
 }
 
+void RecordLayer::toggleRenderIOS(CCObject* btn) {
+    FLAlertLayer::create("Info", "Rendering on iOS is not supported yet!", "OK")->show();
+}
+
 void RecordLayer::onEditMacro(CCObject*) {
     MacroEditLayer::open();
 }
@@ -919,12 +923,16 @@ bool RecordLayer::setup() {
     spriteOn2->setScale(0.74f);
     ButtonSprite* spriteOff2 = ButtonSprite::create("Start");
     spriteOff2->setScale(0.74f);
-
+    
+    #ifdef GEODE_IS_IOS
+    renderToggle = CCMenuItemToggler::create(spriteOff2, spriteOn2, this, menu_selector(RecordLayer::toggleRenderIOS));
+    #else
     renderToggle = CCMenuItemToggler::create(spriteOff2, spriteOn2, this, menu_selector(RecordLayer::toggleRender));
     renderToggle->toggle(g.renderer.recording || g.renderer.recordingAudio);
 
     renderToggle->setPosition(ccp(-65.5, -100));
     menu->addChild(renderToggle);
+    #endif
 
     spr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
     spr->setScale(0.65f);

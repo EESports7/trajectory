@@ -15,6 +15,7 @@
 #include <filesystem>
 #include <fstream>
 
+#ifndef GEODE_IS_IOS
 class $modify(CCParticleSystemQuad) {
 
     static CCParticleSystemQuad* create(const char* v1, bool v2) {
@@ -837,3 +838,4 @@ void Renderer::handleAudioRecording(PlayLayer* pl, int frame) {
     else
         g.renderer.stopAudio();
 }
+#endif

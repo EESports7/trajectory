@@ -1,6 +1,7 @@
 #include "../includes.hpp"
 #include "ffmpeg/events.hpp"
 
+#ifndef GEODE_IS_IOS
 enum AudioMode {
     Off = 0,
     Song = 1,
@@ -77,3 +78,4 @@ public:
     static bool shouldUseAPI();
     bool tryPause();
 };
+#endif

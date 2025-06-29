@@ -115,6 +115,8 @@ public:
 	void togglePlaying(CCObject*);
 
 	void toggleRender(CCObject* btn);
+	
+	void toggleRenderIOS(CCObject* btn);
 
 	void openPresets(CCObject*);
 
