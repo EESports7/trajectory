@@ -142,9 +142,7 @@ void onKeybind(bool down, ActionID id) {
 
 $execute{
 
-#ifdef GEODE_IS_WINDOWS
-#ifdef GEODE_IS_MACOS
-
+#if defined(GEODE_IS_WINDOWS) && defined(GEODE_IS_MACOS)
     BindManager * bm = BindManager::get();
 
     bm->registerBindable({
@@ -233,7 +231,6 @@ $execute{
         }, InvokeBindFilter(nullptr, (""_spr) + keybindIDs[i]));
     }
 
-#endif
 #endif
 
 }
