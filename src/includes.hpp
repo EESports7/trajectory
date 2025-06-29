@@ -45,6 +45,12 @@ const std::string buttonIDs[6] = {
 
 class Global {
 
+    #define DESELECT_INPUT(node) \
+    if (node) { \
+        node->onClickTrackNode(false); \
+        node->setDelegate(nullptr); \
+    }
+
     Global() {}
 
 public:

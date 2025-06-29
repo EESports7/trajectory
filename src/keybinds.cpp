@@ -10,7 +10,7 @@
 #include <Geode/modify/CCKeyboardDispatcher.hpp>
 #include <Geode/modify/CCTouchDispatcher.hpp>
 
-#if defined(GEODE_IS_WINDOWS) && defined(GEODE_IS_MACOS)
+#ifdef GEODE_IS_DESKTOP
 
 #include <geode.custom-keybinds/include/Keybinds.hpp>
 #include <regex>
@@ -64,11 +64,10 @@ namespace keybinds {
 
 #endif
 
-#if defined (GEODE_IS_WINDOWS) && defined (GEODE_IS_MACOS)
+#ifdef GEODE_IS_DESKTOP
 using namespace keybinds;
 
 void onKeybind(bool down, ActionID id) {
-#if defined(GEODE_IS_WINDOWS) || defined(GEODE_IS_MACOS)
 
   auto& g = Global::get();
 
@@ -135,14 +134,9 @@ void onKeybind(bool down, ActionID id) {
         static_cast<RecordLayer*>(g.layer)->noclipToggle->toggle(g.mod->getSavedValue<bool>("macro_noclip"));
     }
   }
-
-#endif // GEODE_IS_WINDOWS || GEODE_IS_MACOS
 }
-#endif // !GEODE_IS_IOS && !GEODE_IS_MACOS
 
 $execute{
-
-#if defined(GEODE_IS_WINDOWS) && defined(GEODE_IS_MACOS)
     BindManager * bm = BindManager::get();
 
     bm->registerBindable({
@@ -230,7 +224,5 @@ $execute{
         new EventListener([=](InvokeBindEvent* event) { onKeybind(event->isDown(), event->getID()); return ListenerResult::Propagate;
         }, InvokeBindFilter(nullptr, (""_spr) + keybindIDs[i]));
     }
-
-#endif
-
 }
+#endif

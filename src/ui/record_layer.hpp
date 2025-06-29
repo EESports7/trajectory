@@ -76,6 +76,15 @@ protected:
 	bool setup() override;
 
 	~RecordLayer() override {
+		DESELECT_INPUT(widthInput)
+		DESELECT_INPUT(heightInput)
+		DESELECT_INPUT(bitrateInput)
+		DESELECT_INPUT(fpsInput)
+		DESELECT_INPUT(codecInput)
+		DESELECT_INPUT(seedInput)
+		DESELECT_INPUT(speedhackInput)
+		DESELECT_INPUT(respawnInput)
+		DESELECT_INPUT(tpsInput)
 		cocos2d::CCTouchDispatcher::get()->unregisterForcePrio(this);
 	    Global::get().layer = nullptr;
 	}

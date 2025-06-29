@@ -28,6 +28,13 @@ private:
 
 public:
 
+~RenderSettingsLayer() override {
+		DESELECT_INPUT(argsInput)
+		DESELECT_INPUT(audioArgsInput)
+		DESELECT_INPUT(secondsInput)
+		DESELECT_INPUT(videoArgsInput)
+	}
+
 	STATIC_CREATE(RenderSettingsLayer, 396, 277)
 	
 	void open(CCObject*) {
