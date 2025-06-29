@@ -22,13 +22,14 @@ class $modify(CCScheduler) {
 
             return CCScheduler::update(dt);
         }
-
+        #ifndef GEODE_IS_IOS
         if (g.renderer.recording || g.renderer.recordingAudio) {
             if (g.currentPitch != 1.f)
                 Global::updatePitch(1.f);
 
             return CCScheduler::update(dt);
         }
+        #endif
 
         float speedhack = 1.f;
 
@@ -129,7 +130,9 @@ class $modify(PlayLayer) {
             Global::get().safeMode = true;
         
         if (getActionByTag(16)) {
+            #ifndef GEODE_IS_IOS
             if (Global::get().renderer.recordingAudio) Global::get().renderer.stopAudio();
+            #endif
             
             if (g.mod->getSavedValue<bool>("respawn_time_enabled")) {
                 stopActionByTag(16);
