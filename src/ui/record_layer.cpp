@@ -924,8 +924,8 @@ bool RecordLayer::setup() {
     #ifdef GEODE_IS_IOS
     ButtonSprite* spriteOn2 = ButtonSprite::create("N/A");
     spriteOn2->setScale(0.74f);
-    ButtonSprite * spriteOff2 = ButtonSprite::create("N/A");
-    spriteOff2 = ButtonSprite::create("N/A");
+    ButtonSprite* spriteOff2 = ButtonSprite::create("N/A");
+    spriteOff2->setScale(0.74f);
     #else
     ButtonSprite* spriteOn2 = ButtonSprite::create("Stop");
     spriteOn2->setScale(0.74f);
