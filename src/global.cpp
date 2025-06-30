@@ -3,7 +3,7 @@
 
 #include <Geode/modify/CCTextInputNode.hpp>
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_DESKTOP
 #include <geode.custom-keybinds/include/Keybinds.hpp>
 #endif
 
@@ -186,7 +186,7 @@ int Global::getCurrentFrame(bool editor) {
 }
 
 void Global::updateKeybinds() {
-#ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_DESKTOP
 
   auto& g = Global::get();
   for (size_t i = 0; i < 6; i++) {
@@ -435,7 +435,7 @@ $execute{
     g.mod->setSavedValue("menu_pause_on_open", false);
     g.mod->setSavedValue("menu_show_cursor", true);
 
-    #ifdef GEODE_IS_ANDROID
+    #ifdef GEODE_IS_MOBILE
     g.mod->setSavedValue("menu_show_cursor", false);
     #endif
 

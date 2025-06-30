@@ -29,7 +29,7 @@ class $modify(CCEGLView) {
 
 class $modify(FLAlertLayer) {
 
-#ifdef GEODE_IS_ANDROID
+#ifdef GEODE_IS_MOBILE
 
     virtual bool ccTouchBegan(cocos2d::CCTouch * touch, cocos2d::CCEvent * event) {
         if (!FLAlertLayer::ccTouchBegan(touch, event)) return false;

@@ -31,7 +31,7 @@ const std::vector<std::vector<RecordSetting>> settings {
 		{ "Auto Safe Mode:", "macro_auto_safe_mode", InputType::None }
 	},
 	{
-	#ifdef GEODE_IS_WINDOWS
+	#ifdef GEODE_IS_DESKTOP
 		{ "Force cursor on open:", "menu_show_cursor", InputType::None },
 		{ "Button on pause menu:", "menu_show_button", InputType::None },
 		{ "Pause on open:", "menu_pause_on_open", InputType::None },
@@ -67,7 +67,7 @@ class $modify(PauseLayer) {
     void customSetup() {
         PauseLayer::customSetup();
 
-        #ifdef GEODE_IS_WINDOWS
+        #ifdef GEODE_IS_DESKTOP
 
         if (!Mod::get()->getSavedValue<bool>("menu_show_button")) return;
 
@@ -147,7 +147,7 @@ RecordLayer* RecordLayer::openMenu(bool instant) {
         if (!pl->m_isPaused)
             pl->pauseGame(false);
     }
-#ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_DESKTOP
     else if (pl && g.mod->getSavedValue<bool>("menu_show_cursor")) {
         cursor = cocos2d::CCEGLView::sharedOpenGLView()->getShouldHideCursor();
         cocos2d::CCEGLView::sharedOpenGLView()->showCursor(true);
@@ -485,7 +485,7 @@ void RecordLayer::showKeybindsWarning() {
 }
 
 void RecordLayer::openKeybinds(CCObject*) {
-#ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_DESKTOP
 
     MoreOptionsLayer::create()->onKeybindings(nullptr);
     CCScene* scene = CCDirector::get()->getRunningScene();
@@ -723,7 +723,7 @@ bool RecordLayer::setup() {
     btn->setPosition(ccp(-176, 34));
     menu->addChild(btn);
 
-#ifdef GEODE_IS_WINDOWS
+#ifdef GEODE_IS_DESKTOP
     btnSprite = ButtonSprite::create("Keybinds");
 #else
     btnSprite = ButtonSprite::create("Buttons");
