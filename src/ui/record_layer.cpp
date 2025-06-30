@@ -31,7 +31,7 @@ const std::vector<std::vector<RecordSetting>> settings {
 		{ "Auto Safe Mode:", "macro_auto_safe_mode", InputType::None }
 	},
 	{
-	#ifdef GEODE_IS_DESKTOP
+	#ifdef GEODE_IS_WINDOWS
 		{ "Force cursor on open:", "menu_show_cursor", InputType::None },
 		{ "Button on pause menu:", "menu_show_button", InputType::None },
 		{ "Pause on open:", "menu_pause_on_open", InputType::None },
@@ -147,7 +147,7 @@ RecordLayer* RecordLayer::openMenu(bool instant) {
         if (!pl->m_isPaused)
             pl->pauseGame(false);
     }
-#ifdef GEODE_IS_DESKTOP
+#ifdef GEODE_IS_WINDOWS
     else if (pl && g.mod->getSavedValue<bool>("menu_show_cursor")) {
         cursor = cocos2d::CCEGLView::sharedOpenGLView()->getShouldHideCursor();
         cocos2d::CCEGLView::sharedOpenGLView()->showCursor(true);
