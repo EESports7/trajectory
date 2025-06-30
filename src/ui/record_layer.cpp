@@ -921,13 +921,20 @@ bool RecordLayer::setup() {
     bg->setZOrder(29);
     menu->addChild(bg);
 
+    #ifdef GEODE_IS_IOS
+    ButtonSprite* spriteOn2 = ButtonSprite::create("N/A");
+    spriteOn2->setScale(0.74f);
+    #else
     ButtonSprite* spriteOn2 = ButtonSprite::create("Stop");
     spriteOn2->setScale(0.74f);
     ButtonSprite* spriteOff2 = ButtonSprite::create("Start");
     spriteOff2->setScale(0.74f);
+    #endif
     
     #ifdef GEODE_IS_IOS
-    renderToggle = CCMenuItemToggler::create(spriteOff2, spriteOn2, this, menu_selector(RecordLayer::toggleRenderIOS));
+    renderToggle = CCMenuItemToggler::create(spriteOn2, this, menu_selector(RecordLayer::toggleRenderIOS));
+    renderToggle->setPosition(ccp(-65.5, -100));
+    menu->addChild(renderToggle);
     #else
     renderToggle = CCMenuItemToggler::create(spriteOff2, spriteOn2, this, menu_selector(RecordLayer::toggleRender));
     renderToggle->toggle(g.renderer.recording || g.renderer.recordingAudio);
