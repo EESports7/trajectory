@@ -57,7 +57,7 @@
 				"win": "{gd_dir}/macros",
 				"mac": "{gd_dir}/macros",
 				"android": "{gd_dir}/macros",
-				"ios: "{mod_save_dir}/macros"
+				"ios": "{mod_save_dir}/macros"
 			}
 		},
 		"autosaves_folder": {
