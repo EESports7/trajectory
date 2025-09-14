@@ -194,7 +194,7 @@ PlayerData PlayerPracticeFixes::saveData(PlayerObject* player) {
     data.m_unkA99 = player->m_unkA99;
     data.m_totalTime = player->m_totalTime;
     data.m_isBeingSpawnedByDualPortal = player->m_isBeingSpawnedByDualPortal;
-    data.m_unkAAC = player->m_unkAAC;
+    // data.m_unkAAC = player->m_unkAAC;
     data.m_unkAngle1 = player->m_unkAngle1;
     data.m_yVelocityRelated3 = player->m_yVelocityRelated3;
     data.m_defaultMiniIcon = player->m_defaultMiniIcon;
@@ -450,7 +450,7 @@ void PlayerPracticeFixes::applyData(PlayerObject* player, PlayerData data, bool 
     player->m_unkA99 = data.m_unkA99;
     player->m_totalTime = data.m_totalTime;
     player->m_isBeingSpawnedByDualPortal = data.m_isBeingSpawnedByDualPortal;
-    player->m_unkAAC = data.m_unkAAC;
+    // player->m_unkAAC = data.m_unkAAC;
     player->m_unkAngle1 = data.m_unkAngle1;
     player->m_yVelocityRelated3 = data.m_yVelocityRelated3;
     player->m_defaultMiniIcon = data.m_defaultMiniIcon;
