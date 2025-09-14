@@ -209,15 +209,48 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->togglePlayerScale(false, true);
         player->updatePlayerScale();
         break;
-        // case 11:
-            // player->flipGravity(true, true); break;
-        // case 10:
-            // player->flipGravity(false, true); break;
-    case 200: player->m_playerSpeed = 0.7f; break;
-    case 201: player->m_playerSpeed = 0.9f; break;
-    case 202: player->m_playerSpeed = 1.1f; break;
-    case 203: player->m_playerSpeed = 1.3f; break;
-    case 1334: player->m_playerSpeed = 1.6f; break;
+    case 11:
+        if(!player->m_isUpsideDown){
+            player->flipGravity(true, true);
+            player->m_yVelocity /= 2.0;
+        }
+        break;
+    case 10:
+        if(player->m_isUpsideDown){
+            player->flipGravity(false, true);
+            player->m_yVelocity /= 2.0;
+        }
+        break;
+    case 200:
+        player->m_playerSpeed = 0.7f;
+        player->m_speedMultiplier = 5.980002;
+        player->m_yStart = 10.620032;
+        player->m_gravity = 0.940199;
+        break;
+    case 201:
+        player->m_playerSpeed = 0.9f;
+        player->m_speedMultiplier = 5.77000189;
+        player->m_yStart = 11.1800318;
+        player->m_gravity = 0.958199024;
+        break;
+    case 202:
+        player->m_playerSpeed = 1.1f;
+        player->m_speedMultiplier = 5.870002;
+        player->m_yStart = 11.420032;
+        player->m_gravity = 0.957199;
+        break;
+    case 203:
+        player->m_playerSpeed = 1.3f;
+        player->m_speedMultiplier = 6.000002;
+        player->m_yStart = 11.230032;
+        player->m_gravity = 0.961199;
+        break;
+    case 1334:
+        player->m_playerSpeed = 1.6f;
+        player->m_speedMultiplier = 6.000002;
+        player->m_yStart = 11.230032;
+        player->m_gravity = 0.961199;
+        break;
     }
 }
 
