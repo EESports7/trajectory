@@ -387,7 +387,7 @@ class $modify(GJBaseGameLayer) {
             for (const auto& obj : *objects) {
                 if (!obj) continue;
 
-                if ((!objectTypes.contains(static_cast<int>(obj->m_objectType)) && !(portalIDs.contains(obj->m_objectID) || padIDs.contains(obj->m_objectID) ) || collectibleIDs.contains(obj->m_objectID)) {
+                if ((!objectTypes.contains(static_cast<int>(obj->m_objectType)) && !(portalIDs.contains(obj->m_objectID) || padIDs.contains(obj->m_objectID)) ) || collectibleIDs.contains(obj->m_objectID)) {
                     if (obj->m_isDisabled || obj->m_isDisabled2) continue;  
 
                     disabledObjects.push_back(obj);
