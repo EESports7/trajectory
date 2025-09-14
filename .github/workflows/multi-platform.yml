@@ -14,10 +14,7 @@ jobs:
         config:
         - name: Windows
           os: windows-latest
-          build-type: RelWithDebInfo
-          
-        - name: macOS
-          os: macos-latest
+          build-type: Release
 
         - name: Android32
           os: ubuntu-latest
@@ -26,10 +23,6 @@ jobs:
         - name: Android64
           os: ubuntu-latest
           target: Android64
-        
-        - name: iOS
-          os: macos-latest
-          target: iOS
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
