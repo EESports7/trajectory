@@ -105,7 +105,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         fakePlayer->update(t.delta);
         // fakePlayer->updateSpecial(t.delta);
         fakePlayer->updateInternalActions(t.delta);
-        fakePlayer->updateRotation(t.delta * 60);
+        fakePlayer->updateRotation(t.delta);
         // fakePlayer->updatePlayerScale();
 
         cocos2d::ccColor4F color = hold ? t.color1 : t.color2;
@@ -199,6 +199,27 @@ void ShowTrajectory::updateMergedColor() {
     color3 = newColor;
 }
 
+void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
+    if (!padIDs.contains(obj->m_objectID)) return;
+
+    bool targetGravity;
+    switch (obj->m_objectID) {
+        case 140:
+            player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,9),true,0);
+            break;
+        case 35:
+            player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,8),true,0);
+            break;
+        case 1332:
+            player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,34),true,0);
+            break;
+        case 67:
+            targetGravity = !obj->isFacingDown() || !obj->isFacingLeft();
+            player->propellPlayer(0.8,true,0);
+            player->flipGravity(targetGravity,true);
+            break;
+    }
+}
 void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
     if (!portalIDs.contains(id)) return;
 
@@ -212,15 +233,19 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->updatePlayerScale();
         break;
     case 11:
+        player->flipGravity(true, true);
         if(!player->m_isUpsideDown){
-            player->flipGravity(true, true);
             player->m_yVelocity /= 2.0;
+            player->m_yVelocityRelated3 /= 2.0;
+            player->m_fallSpeed /= 2.0;
         }
         break;
     case 10:
+        player->flipGravity(false, true);
         if(player->m_isUpsideDown){
-            player->flipGravity(false, true);
             player->m_yVelocity /= 2.0;
+            player->m_yVelocityRelated3 /= 2.0;
+            player->m_fallSpeed /= 2.0;
         }
         break;
     case 200:
@@ -400,15 +425,20 @@ class $modify(GJBaseGameLayer) {
     }
 
     void playerTouchedRing(PlayerObject * p0, RingObject * p1) {
-        if (!t.creatingTrajectory)
+        if (!t.creatingTrajectory){
             GJBaseGameLayer::playerTouchedRing(p0, p1);
+            ShowTrajectory::handlePad(p0,p1);
+        }
     }
 
     void playerTouchedTrigger(PlayerObject * p0, EffectGameObject * p1) {
-        if (!t.creatingTrajectory)
+        if (!t.creatingTrajectory){
             GJBaseGameLayer::playerTouchedTrigger(p0, p1);
-        else
+
+        }else{
             ShowTrajectory::handlePortal(p0, p1->m_objectID);
+            ShowTrajectory::handlePad(p0,p1);
+        }
     }
 
     void activateSFXTrigger(SFXTriggerGameObject * p0) {
