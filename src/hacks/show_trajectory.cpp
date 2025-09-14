@@ -203,19 +203,26 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
     if (!padIDs.contains(obj->m_objectID)) return;
 
     bool targetGravity;
+    float plSize = (player->m_vehicleSize == 1.0) ? 1.0f : 0.8f;
+    float bFactor = 16.0f * player->flipMod() * plSize;
+    float boost;
     switch (obj->m_objectID) {
         case 140:
-            player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,9),true,0);
+            boost = GJBaseGameLayer::get()->getBumpMod(player,9) * bFactor;
+            player->setYVelocity(boost,44);
             break;
         case 35:
-            player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,8),true,0);
+            boost = GJBaseGameLayer::get()->getBumpMod(player,8) * bFactor;
+            player->setYVelocity(boost,44);
             break;
         case 1332:
-            player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,34),true,0);
+            boost = GJBaseGameLayer::get()->getBumpMod(player,34) * bFactor;
+            player->setYVelocity(boost,44);
             break;
         case 67:
             targetGravity = !obj->isFacingDown(); // || !obj->isFacingLeft();
-            player->propellPlayer(0.8,true,0);
+            boost = 0.8 * bFactor;
+            player->setYVelocity(boost,44);
             player->flipGravity(targetGravity,true);
             break;
     }
