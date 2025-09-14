@@ -214,7 +214,7 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
             player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,34),true,0);
             break;
         case 67:
-            targetGravity = !obj->isFacingDown() || !obj->isFacingLeft();
+            targetGravity = !obj->isFacingDown(); // || !obj->isFacingLeft();
             player->propellPlayer(0.8,true,0);
             player->flipGravity(targetGravity,true);
             break;
