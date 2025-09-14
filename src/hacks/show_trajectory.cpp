@@ -424,6 +424,7 @@ class $modify(GJBaseGameLayer) {
         if (t.creatingTrajectory) {
 
             ShowTrajectory::handlePortal(p0, p1->m_objectID);
+            ShowTrajectory::handlePad(p0,p1);
 
             return false;
         }
@@ -434,7 +435,6 @@ class $modify(GJBaseGameLayer) {
     void playerTouchedRing(PlayerObject * p0, RingObject * p1) {
         if (!t.creatingTrajectory){
             GJBaseGameLayer::playerTouchedRing(p0, p1);
-            ShowTrajectory::handlePad(p0,p1);
         }
     }
 
