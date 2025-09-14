@@ -105,7 +105,6 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         fakePlayer->update(t.delta);
         fakePlayer->updateSpecial(t.delta);
         fakePlayer->updateInternalActions(t.delta);
-        fakePlayer->m_rotation = fakePlayer->getRotation();
         fakePlayer->updateRotation(t.delta * 60);
         // fakePlayer->updatePlayerScale();
 
