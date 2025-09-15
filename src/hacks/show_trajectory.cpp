@@ -244,22 +244,18 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->updatePlayerScale();
         break;
     case 11:
-        //player->flipGravity(true, true);
-        //if(!player->m_isUpsideDown){
-        //    player->m_yVelocity /= 2.0;
-        //    player->m_yVelocityRelated3 /= 2.0;
-        //    player->m_fallSpeed /= 2.0;
-        //}
-        GJBaseGameLayer::get()->flipGravity(player,true,false);
+        player->flipGravity(true, true);
+        if(!player->m_isUpsideDown){
+            player->m_yVelocity /= 2.0;
+            player->m_fallSpeed /= 2.0;
+        }
         break;
     case 10:
-        //player->flipGravity(false, true);
-        //if(player->m_isUpsideDown){
-        //    player->m_yVelocity /= 2.0;
-        //    player->m_yVelocityRelated3 /= 2.0;
-        //    player->m_fallSpeed /= 2.0;
-        //}
-        GJBaseGameLayer::get()->flipGravity(player,false,false);
+        player->flipGravity(false, true);
+        if(player->m_isUpsideDown){
+            player->m_yVelocity /= 2.0;
+            player->m_fallSpeed /= 2.0;
+        }
         break;
     case 200:
         player->m_playerSpeed = 0.7f;
@@ -429,10 +425,10 @@ class $modify(GJBaseGameLayer) {
     bool canBeActivatedByPlayer(PlayerObject * p0, EffectGameObject * p1) {
         if (t.creatingTrajectory) {
 
-            ShowTrajectory::handlePortal(p0, p1->m_objectID);
-            ShowTrajectory::handlePad(p0,p1);
+            // ShowTrajectory::handlePortal(p0, p1->m_objectID);
+            // ShowTrajectory::handlePad(p0,p1);
 
-            return false;
+            return true;
         }
 
         return GJBaseGameLayer::canBeActivatedByPlayer(p0, p1);
