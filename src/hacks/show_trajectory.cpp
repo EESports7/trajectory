@@ -257,6 +257,10 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
             player->m_fallSpeed /= 2.0;
         }
         break;
+    case 2926:
+        player->flipGravity(!player->m_isUpsideDown, true);
+        player->m_yVelocity /= 2.0;
+        player->m_fallSpeed /= 2.0;
     case 200:
         player->m_playerSpeed = 0.7f;
         player->m_speedMultiplier = 5.980002;
@@ -425,10 +429,10 @@ class $modify(GJBaseGameLayer) {
     bool canBeActivatedByPlayer(PlayerObject * p0, EffectGameObject * p1) {
         if (t.creatingTrajectory) {
 
-            // ShowTrajectory::handlePortal(p0, p1->m_objectID);
-            // ShowTrajectory::handlePad(p0,p1);
+            ShowTrajectory::handlePortal(p0, p1->m_objectID);
+            ShowTrajectory::handlePad(p0,p1);
 
-            return true;
+            return false;
         }
 
         return GJBaseGameLayer::canBeActivatedByPlayer(p0, p1);
