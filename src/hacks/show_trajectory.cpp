@@ -244,20 +244,22 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->updatePlayerScale();
         break;
     case 11:
-        player->flipGravity(true, true);
-        if(!player->m_isUpsideDown){
-            player->m_yVelocity /= 2.0;
-            player->m_yVelocityRelated3 /= 2.0;
-            player->m_fallSpeed /= 2.0;
-        }
+        //player->flipGravity(true, true);
+        //if(!player->m_isUpsideDown){
+        //    player->m_yVelocity /= 2.0;
+        //    player->m_yVelocityRelated3 /= 2.0;
+        //    player->m_fallSpeed /= 2.0;
+        //}
+        GJBaseGameLayer::get()->flipGravity(player,true,false);
         break;
     case 10:
-        player->flipGravity(false, true);
-        if(player->m_isUpsideDown){
-            player->m_yVelocity /= 2.0;
-            player->m_yVelocityRelated3 /= 2.0;
-            player->m_fallSpeed /= 2.0;
-        }
+        //player->flipGravity(false, true);
+        //if(player->m_isUpsideDown){
+        //    player->m_yVelocity /= 2.0;
+        //    player->m_yVelocityRelated3 /= 2.0;
+        //    player->m_fallSpeed /= 2.0;
+        //}
+        GJBaseGameLayer::get()->flipGravity(player,false,false);
         break;
     case 200:
         player->m_playerSpeed = 0.7f;
