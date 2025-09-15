@@ -115,8 +115,8 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
                 color = t.color3;
         }
 
-        if (i >= t.length - 40)
-            color.a = (t.length - i) / 40.f;
+        // if (i >= t.length - 40)
+        //     color.a = (t.length - i) / 40.f;
 
         t.trajectoryNode()->drawSegment(prevPos, fakePlayer->getPosition(), 0.6f, color);
     }
@@ -203,9 +203,9 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
     if (!padIDs.contains(obj->m_objectID)) return;
 
     bool targetGravity;
-    double plSize = (player->m_vehicleSize == 1.0) ? 1.0 : 0.8;
-    double bFactor = 16.0 * player->flipMod() * plSize;
-    double boost;
+    // double plSize = (player->m_vehicleSize == 1.0) ? 1.0 : 0.8;
+    // double bFactor = 16.0 * player->flipMod() * plSize;
+    // double boost;
     switch (obj->m_objectID) {
         case 140:
             // boost = GJBaseGameLayer::get()->getBumpMod(player,9) * bFactor;
