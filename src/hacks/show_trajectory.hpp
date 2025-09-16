@@ -64,6 +64,9 @@ public:
     PlayerObject* fakePlayer1 = nullptr;
     PlayerObject* fakePlayer2 = nullptr;
 
+    std::vector<GameObject*> p1Collided;
+    std::vector<GameObject*> p2Collided;
+
     bool creatingTrajectory = false;
     bool cancelTrajectory = false;
     bool miniScale = false;
