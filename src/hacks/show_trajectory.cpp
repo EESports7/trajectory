@@ -444,9 +444,6 @@ class $modify(GJBaseGameLayer) {
                 ShowTrajectory::handlePad(p0,p1);
                 t.p2Collided.push_back(p1);
             }
-            
-            
-
             return false;
         }
 
@@ -463,10 +460,20 @@ class $modify(GJBaseGameLayer) {
         if (!t.creatingTrajectory){
             GJBaseGameLayer::playerTouchedTrigger(p0, p1);
 
-        }// else{
-        //     ShowTrajectory::handlePortal(p0, p1->m_objectID);
-        //     ShowTrajectory::handlePad(p0,p1);
-        // }
+        }else{
+            int p1Contains = std::count(t.p1Collided.begin(),t.p1Collided.end(),p1);
+            int p2Contains = std::count(t.p2Collided.begin(),t.p2Collided.end(),p1);
+            
+            if(t.fakePlayer1 == p0 && p1Contains == 0){
+                ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                ShowTrajectory::handlePad(p0,p1);
+                t.p1Collided.push_back(p1);
+            }else if(t.fakePlayer2 == p0 && p2Contains == 0){
+                ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                ShowTrajectory::handlePad(p0,p1);
+                t.p2Collided.push_back(p1);
+            }
+        }
     }
 
     void activateSFXTrigger(SFXTriggerGameObject * p0) {
