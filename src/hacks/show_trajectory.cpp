@@ -257,7 +257,7 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
     case 2926:
         player->flipGravity(!player->m_isUpsideDown, true);
         player->m_yVelocity /= 2.0;
-        player->m_fallSpeed /= 2.0;
+        // player->m_fallSpeed /= 2.0;
     case 200:
         player->m_playerSpeed = 0.7f;
         player->m_speedMultiplier = 5.980002;
