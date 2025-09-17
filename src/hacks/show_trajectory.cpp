@@ -69,7 +69,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
     bool player2 = pl->m_player2 == realPlayer;
 
     PlayerData playerData = PlayerPracticeFixes::saveData(realPlayer);
-    fakePlayer->copyAttributes(realPlayer);
+    // fakePlayer->copyAttributes(realPlayer);
     PlayerPracticeFixes::applyData(fakePlayer, playerData, false, false);
 
     // fakePlayer->m_gravityMod = realPlayer->m_gravityMod;
