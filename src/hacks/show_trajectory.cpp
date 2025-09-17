@@ -69,7 +69,11 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
     bool player2 = pl->m_player2 == realPlayer;
 
     PlayerData playerData = PlayerPracticeFixes::saveData(realPlayer);
-    PlayerPracticeFixes::applyData(fakePlayer, playerData, false, true);
+    fakePlayer->copyAttributes(realPlayer);
+    PlayerPracticeFixes::applyData(fakePlayer, playerData, false, false);
+
+    // fakePlayer->m_gravityMod = realPlayer->m_gravityMod;
+    // fakePlayer->m_isOnGround = realPlayer->m_isOnGround;
 
     t.cancelTrajectory = false;
 
@@ -128,8 +132,8 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
 }
 
 void ShowTrajectory::drawPlayerHitbox(PlayerObject* player, CCDrawNode* drawNode) {
-    cocos2d::CCRect bigRect = player->GameObject::getObjectRect();
-    cocos2d::CCRect smallRect = player->GameObject::getObjectRect(0.3, 0.3);
+    cocos2d::CCRect bigRect = player->getObjectRect();
+    cocos2d::CCRect smallRect = player->getObjectRect(0.3, 0.3);
 
     std::vector<cocos2d::CCPoint> vertices = ShowTrajectory::getVertices(player, bigRect, t.deathRotation);
     drawNode->drawPolygon(&vertices[0], 4, ccc4f(t.color2.r, t.color2.g, t.color2.b, 0.2f), 0.5, t.color2);
@@ -146,45 +150,45 @@ std::vector<cocos2d::CCPoint> ShowTrajectory::getVertices(PlayerObject* player, 
         ccp(rect.getMinX(), rect.getMinY())
     };
 
-    cocos2d::CCPoint center = ccp(
-        (rect.getMinX() + rect.getMaxX()) / 2.f,
-        (rect.getMinY() + rect.getMaxY()) / 2.f
-    );
+    // cocos2d::CCPoint center = ccp(
+    //     (rect.getMinX() + rect.getMaxX()) / 2.f,
+    //     (rect.getMinY() + rect.getMaxY()) / 2.f
+    // );
 
-    float size = static_cast<int>(rect.getMaxX() - rect.getMinX());
+    // float size = static_cast<int>(rect.getMaxX() - rect.getMinX());
 
-    if ((size == 18 || size == 5) && player->getScale() == 1) {
-        for (auto& vertex : vertices) {
-            vertex.x = center.x + (vertex.x - center.x) / 0.6f;
-            vertex.y = center.y + (vertex.y - center.y) / 0.6f;
-        }
-    }
+    // if ((size == 18 || size == 5) && player->getScale() == 1) {
+    //     for (auto& vertex : vertices) {
+    //         vertex.x = center.x + (vertex.x - center.x) / 0.6f;
+    //         vertex.y = center.y + (vertex.y - center.y) / 0.6f;
+    //     }
+    // }
 
-    if ((size == 7 || size == 30 || size == 29 || size == 9) && player->getScale() != 1) {
-        for (auto& vertex : vertices) {
-            vertex.x = center.x + (vertex.x - center.x) * 0.6;
-            vertex.y = center.y + (vertex.y - center.y) * 0.6f;
-        }
-    }
+    // if ((size == 7 || size == 30 || size == 29 || size == 9) && player->getScale() != 1) {
+    //     for (auto& vertex : vertices) {
+    //         vertex.x = center.x + (vertex.x - center.x) * 0.6;
+    //         vertex.y = center.y + (vertex.y - center.y) * 0.6f;
+    //     }
+    // }
 
-    if (player->m_isDart) {
-        for (auto& vertex : vertices) {
-            vertex.x = center.x + (vertex.x - center.x) * 0.3f;
-            vertex.y = center.y + (vertex.y - center.y) * 0.3f;
-        }
-    }
+    // if (player->m_isDart) {
+    //     for (auto& vertex : vertices) {
+    //         vertex.x = center.x + (vertex.x - center.x) * 0.3f;
+    //         vertex.y = center.y + (vertex.y - center.y) * 0.3f;
+    //     }
+    // }
 
-    float angle = CC_DEGREES_TO_RADIANS(rotation * -1.f);
-    for (auto& vertex : vertices) {
-        float x = vertex.x - center.x;
-        float y = vertex.y - center.y;
+    // float angle = CC_DEGREES_TO_RADIANS(rotation * -1.f);
+    // for (auto& vertex : vertices) {
+    //     float x = vertex.x - center.x;
+    //     float y = vertex.y - center.y;
 
-        float xNew = center.x + (x * cos(angle)) - (y * sin(angle));
-        float yNew = center.y + (x * sin(angle)) + (y * cos(angle));
+    //     float xNew = center.x + (x * cos(angle)) - (y * sin(angle));
+    //     float yNew = center.y + (x * sin(angle)) + (y * cos(angle));
 
-        vertex.x = xNew;
-        vertex.y = yNew;
-    }
+    //     vertex.x = xNew;
+    //     vertex.y = yNew;
+    // }
 
     return vertices;
 }
@@ -207,29 +211,18 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
     if (!padIDs.contains(obj->m_objectID)) return;
 
     bool targetGravity;
-    // double plSize = (player->m_vehicleSize == 1.0) ? 1.0 : 0.8;
-    // double bFactor = 16.0 * player->flipMod() * plSize;
-    // double boost;
     switch (obj->m_objectID) {
         case 140:
-            // boost = GJBaseGameLayer::get()->getBumpMod(player,9) * bFactor;
-            // player->setYVelocity(boost,44);
             player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,9),true,0);
             break;
         case 35:
-            // boost = GJBaseGameLayer::get()->getBumpMod(player,8) * bFactor;
-            // player->setYVelocity(boost,44);
             player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,8),true,0);
             break;
         case 1332:
-            // boost = GJBaseGameLayer::get()->getBumpMod(player,34) * bFactor;
-            // player->setYVelocity(boost,44);
             player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,34),true,0);
             break;
         case 67:
-            targetGravity = !obj->isFacingDown(); // || !obj->isFacingLeft();
-            // boost = 0.8 * bFactor;
-            // player->setYVelocity(boost,44);
+            targetGravity = !obj->isFacingDown();
             player->propellPlayer(0.8,true,0);
             player->flipGravity(targetGravity,true);
             break;
@@ -294,6 +287,9 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->m_speedMultiplier = 6.000002;
         player->m_yStart = 11.230032;
         player->m_gravity = 0.961199;
+        break;
+    case 12:
+        // player->switchedToMode(GameObjectType::CubePortal);
         break;
     }
 }
@@ -435,11 +431,12 @@ class $modify(GJBaseGameLayer) {
             int p1Contains = std::count(t.p1Collided.begin(),t.p1Collided.end(),p1);
             int p2Contains = std::count(t.p2Collided.begin(),t.p2Collided.end(),p1);
             
-            if(t.fakePlayer1 == p0 && p1Contains == 0){
+            if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
                 ShowTrajectory::handlePortal(p0, p1->m_objectID);
                 ShowTrajectory::handlePad(p0,p1);
                 t.p1Collided.push_back(p1);
-            }else if(t.fakePlayer2 == p0 && p2Contains == 0){
+
+            }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer2)){
                 ShowTrajectory::handlePortal(p0, p1->m_objectID);
                 ShowTrajectory::handlePad(p0,p1);
                 t.p2Collided.push_back(p1);
@@ -464,13 +461,12 @@ class $modify(GJBaseGameLayer) {
             int p1Contains = std::count(t.p1Collided.begin(),t.p1Collided.end(),p1);
             int p2Contains = std::count(t.p2Collided.begin(),t.p2Collided.end(),p1);
             
-            if(t.fakePlayer1 == p0 && p1Contains == 0){
+            if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
                 ShowTrajectory::handlePortal(p0, p1->m_objectID);
-                ShowTrajectory::handlePad(p0,p1);
                 t.p1Collided.push_back(p1);
-            }else if(t.fakePlayer2 == p0 && p2Contains == 0){
+
+            }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer2)){
                 ShowTrajectory::handlePortal(p0, p1->m_objectID);
-                ShowTrajectory::handlePad(p0,p1);
                 t.p2Collided.push_back(p1);
             }
         }
