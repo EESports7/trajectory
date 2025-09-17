@@ -80,7 +80,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
     for (int i = 0; i < t.length; i++) {
         CCPoint prevPos = fakePlayer->getPosition();
 
-        player->setVisible(false);
+        fakePlayer->setVisible(false);
         if (hold) {
             if (player2)
                 t.player2Trajectory[i] = prevPos;
