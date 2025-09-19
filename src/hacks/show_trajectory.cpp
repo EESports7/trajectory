@@ -80,9 +80,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
     fakePlayer->m_isDashing = realPlayer->m_isDashing;
     fakePlayer->m_wasRobotJump = realPlayer->m_wasRobotJump;
 
-    fakePlayer->m_dashFireSprite = nullptr;
-    fakePlayer->m_dashSpritesContainer = nullptr;
-    fakePlayer->m_dashParticles = nullptr;
+    fakePlayer->m_playEffects = false;
 
     fakePlayer->m_slopeAngle = realPlayer->m_slopeAngle;
     fakePlayer->m_slopeAngleRadians = realPlayer->m_slopeAngleRadians;
