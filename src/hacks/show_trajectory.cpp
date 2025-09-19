@@ -80,6 +80,10 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
     fakePlayer->m_isDashing = realPlayer->m_isDashing;
     fakePlayer->m_wasRobotJump = realPlayer->m_wasRobotJump;
 
+    fakePlayer->m_dashFireSprite = nullptr;
+    fakePlayer->m_dashSpritesContainer = nullptr;
+    fakePlayer->m_dashParticles = nullptr;
+
     fakePlayer->m_slopeAngle = realPlayer->m_slopeAngle;
     fakePlayer->m_slopeAngleRadians = realPlayer->m_slopeAngleRadians;
     fakePlayer->m_slopeDirection = realPlayer->m_slopeDirection;
@@ -275,14 +279,14 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->flipGravity(true, true);
         if(!player->m_isUpsideDown){
             player->m_yVelocity /= 2.0;
-            player->m_fallSpeed /= 2.0;
+            // player->m_fallSpeed /= 2.0;
         }
         break;
     case 10:
         player->flipGravity(false, true);
         if(player->m_isUpsideDown){
             player->m_yVelocity /= 2.0;
-            player->m_fallSpeed /= 2.0;
+            // player->m_fallSpeed /= 2.0;
         }
         break;
     case 2926:
