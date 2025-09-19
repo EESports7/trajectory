@@ -317,28 +317,34 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->m_gravity = 0.961199;
         break;
     case 12:
-        player->switchedToMode(GameObjectType::CubePortal);
+        player->toggleFlyMode(false, false);
+        player->toggleRollMode(false, false);
+        player->toggleBirdMode(false, false);
+        player->toggleDartMode(false, false);
+        player->toggleRobotMode(false, false);
+        player->toggleSpiderMode(false, false);
+        player->toggleSwingMode(false, false);
         break;
     case 13:
-        player->switchedToMode(GameObjectType::ShipPortal);
+        player->toggleFlyMode(true,true);
         break;
     case 47:
-        player->switchedToMode(GameObjectType::BallPortal);
+        player->toggleRollMode(true,true);
         break;
     case 111:
-        player->switchedToMode(GameObjectType::UfoPortal);
+        player->toggleBirdMode(true,true);
         break;
     case 660:
-        player->switchedToMode(GameObjectType::WavePortal);
+        player->toggleDartMode(true,true);
         break;
     case 745:
-        player->switchedToMode(GameObjectType::RobotPortal);
+        player->toggleRobotMode(true,true);
         break;
     case 1331:
-        player->switchedToMode(GameObjectType::SpiderPortal);
+        player->toggleSpiderMode(true,true);
         break;
     case 1933:
-        player->switchedToMode(GameObjectType::SwingPortal);
+        player->toggleSwingMode(true,true);
         break;
     }
 }
