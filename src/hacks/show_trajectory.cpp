@@ -68,19 +68,46 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
 
     bool player2 = pl->m_player2 == realPlayer;
 
-    PlayerData playerData = PlayerPracticeFixes::saveData(realPlayer);
+    // PlayerData playerData = PlayerPracticeFixes::saveData(realPlayer);
     fakePlayer->copyAttributes(realPlayer);
-    PlayerPracticeFixes::applyData(fakePlayer, playerData, false, false);
+    // PlayerPracticeFixes::applyData(fakePlayer, playerData, false, false);
 
-    // fakePlayer->m_gravityMod = realPlayer->m_gravityMod;
-    // fakePlayer->m_isOnGround = realPlayer->m_isOnGround;
+    fakePlayer->setVisible(false);
+
+    fakePlayer->m_gravityMod = realPlayer->m_gravityMod;
+    fakePlayer->m_isOnGround = realPlayer->m_isOnGround;
+
+    fakePlayer->m_slopeAngle = realPlayer->m_slopeAngle;
+    fakePlayer->m_slopeAngleRadians = realPlayer->m_slopeAngleRadians;
+    fakePlayer->m_slopeDirection = realPlayer->m_slopeDirection;
+    fakePlayer->m_slopeEndTime = realPlayer->m_slopeEndTime;
+    fakePlayer->m_slopeFlipGravityRelated = realPlayer->m_slopeFlipGravityRelated;
+    fakePlayer->m_slopeIsHazard = realPlayer->m_slopeIsHazard;
+    fakePlayer->m_slopeRotation = realPlayer->m_slopeRotation;
+    fakePlayer->m_slopeSlidingMaybeRotated = realPlayer->m_slopeSlidingMaybeRotated;
+    fakePlayer->m_slopeStartTime = realPlayer->m_slopeStartTime;
+    fakePlayer->m_slopeUphill = realPlayer->m_slopeUphill;
+    fakePlayer->m_slopeVelocity = realPlayer->m_slopeVelocity;
+    fakePlayer->m_isOnSlope = realPlayer->m_isOnSlope;
+    fakePlayer->m_maybeSlopeForce = realPlayer->m_maybeSlopeForce;
+    fakePlayer->m_wasOnSlope = realPlayer->m_wasOnSlope;
+    fakePlayer->m_isGripSlope = realPlayer->m_isGripSlope;
+    fakePlayer->m_currentSlope2 = realPlayer->m_currentSlope2;
+    fakePlayer->m_currentSlope3 = realPlayer->m_currentSlope3;
+    fakePlayer->m_currentSlope = realPlayer->m_currentSlope;
+    fakePlayer->m_currentSlopeYVelocity = realPlayer->m_currentSlopeYVelocity;
+    fakePlayer->m_isCurrentSlopeTop = realPlayer->m_isCurrentSlopeTop;
+    fakePlayer->m_collidingWithSlopeId = realPlayer->m_collidingWithSlopeId;
+    fakePlayer->m_isCollidingWithSlope = realPlayer->m_isCollidingWithSlope;
+    fakePlayer->m_maybeUpsideDownSlope = realPlayer->m_maybeUpsideDownSlope;
+    fakePlayer->m_yVelocityBeforeSlope = realPlayer->m_yVelocityBeforeSlope;
+    fakePlayer->m_maybeGoingCorrectSlopeDirection = realPlayer->m_maybeGoingCorrectSlopeDirection;
 
     t.cancelTrajectory = false;
 
     for (int i = 0; i < t.length; i++) {
         CCPoint prevPos = fakePlayer->getPosition();
 
-        fakePlayer->setVisible(false);
         if (hold) {
             if (player2)
                 t.player2Trajectory[i] = prevPos;
@@ -290,7 +317,28 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->m_gravity = 0.961199;
         break;
     case 12:
-        // player->switchedToMode(GameObjectType::CubePortal);
+        player->switchedToMode(GameObjectType::CubePortal);
+        break;
+    case 13:
+        player->switchedToMode(GameObjectType::ShipPortal);
+        break;
+    case 47:
+        player->switchedToMode(GameObjectType::BallPortal);
+        break;
+    case 111:
+        player->switchedToMode(GameObjectType::UfoPortal);
+        break;
+    case 660:
+        player->switchedToMode(GameObjectType::WavePortal);
+        break;
+    case 745:
+        player->switchedToMode(GameObjectType::RobotPortal);
+        break;
+    case 1331:
+        player->switchedToMode(GameObjectType::SpiderPortal);
+        break;
+    case 1933:
+        player->switchedToMode(GameObjectType::SwingPortal);
         break;
     }
 }
