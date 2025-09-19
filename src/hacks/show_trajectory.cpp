@@ -77,6 +77,9 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
     fakePlayer->m_gravityMod = realPlayer->m_gravityMod;
     fakePlayer->m_isOnGround = realPlayer->m_isOnGround;
 
+    fakePlayer->m_isDashing = realPlayer->m_isDashing;
+    fakePlayer->m_wasRobotJump = realPlayer->m_wasRobotJump;
+
     fakePlayer->m_slopeAngle = realPlayer->m_slopeAngle;
     fakePlayer->m_slopeAngleRadians = realPlayer->m_slopeAngleRadians;
     fakePlayer->m_slopeDirection = realPlayer->m_slopeDirection;
