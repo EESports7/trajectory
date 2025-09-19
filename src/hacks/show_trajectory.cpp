@@ -112,15 +112,15 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
     fakePlayer->m_maybeGoingCorrectSlopeDirection = realPlayer->m_maybeGoingCorrectSlopeDirection;
     fakePlayer->m_unk3d0 = realPlayer->m_unk3d0;
     fakePlayer->m_unk3e0 = realPlayer->m_unk3e0;
-    fakePlayer->m_unk3e1; = realPlayer->m_unk3e1;
+    fakePlayer->m_unk3e1 = realPlayer->m_unk3e1;
 
     fakePlayer->m_holdingButtons = realPlayer->m_holdingButtons;
     fakePlayer->m_isSideways = realPlayer->m_isSideways;
-    fakePlayer->m_isGoingLeft; = realPlayer->m_isGoingLeft;
+    fakePlayer->m_isGoingLeft = realPlayer->m_isGoingLeft;
 
-    fakePlayer->m_reverseRelated; = realPlayer->m_reverseRelated;
-    fakePlayer->maybeReverseSpeed; = realPlayer->maybeReverseSpeed;
-    fakePlayer->m_maybeReverseAcceleration; = realPlayer->m_maybeReverseAcceleration;
+    fakePlayer->m_reverseRelated = realPlayer->m_reverseRelated;
+    fakePlayer->m_maybeReverseSpeed = realPlayer->m_maybeReverseSpeed;
+    fakePlayer->m_maybeReverseAcceleration = realPlayer->m_maybeReverseAcceleration;
 
     t.cancelTrajectory = false;
 
