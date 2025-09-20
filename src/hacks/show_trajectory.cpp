@@ -483,8 +483,8 @@ class $modify(GJBaseGameLayer) {
         if (t.creatingTrajectory) {
             int p1Contains = std::count(t.p1Collided.begin(),t.p1Collided.end(),p1);
             int p2Contains = std::count(t.p2Collided.begin(),t.p2Collided.end(),p1);
-            bool player2 = PlayLayer::get()->m_player2 == p0;
-            if(!player2){
+            
+            if(!p0->m_isSecondPlayer){
                 if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
                     ShowTrajectory::handlePortal(p0, p1->m_objectID);
                     ShowTrajectory::handlePad(p0,p1);
@@ -526,9 +526,8 @@ class $modify(GJBaseGameLayer) {
         }else{
             int p1Contains = std::count(t.p1Collided.begin(),t.p1Collided.end(),p1);
             int p2Contains = std::count(t.p2Collided.begin(),t.p2Collided.end(),p1);
-            bool player2 = PlayLayer::get()->m_player2 == p0;
 
-            if(!player2){
+            if(!p0->m_isSecondPlayer){
                 if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
                     ShowTrajectory::handlePortal(p0, p1->m_objectID);
                     t.p1Collided.push_back(p1);
