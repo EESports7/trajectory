@@ -98,7 +98,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         fakePlayer->m_collisionLogLeft->removeAllObjects();
         fakePlayer->m_collisionLogRight->removeAllObjects();
 
-        pl->checkCollisions(fakePlayer, t.delta / pl->m_gameState.m_timeWarp, false);
+        pl->checkCollisions(fakePlayer, t.delta, false);
 
         if (t.cancelTrajectory) {
             fakePlayer->updatePlayerScale();
@@ -112,9 +112,9 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
                 (inverted ? !realPlayer->m_isGoingLeft : realPlayer->m_isGoingLeft) ? fakePlayer->pushButton(static_cast<PlayerButton>(2)) : fakePlayer->pushButton(static_cast<PlayerButton>(3));
         }
 
-        fakePlayer->update(t.delta / pl->m_gameState.m_timeWarp);
-        fakePlayer->updateInternalActions(t.delta / pl->m_gameState.m_timeWarp);
-        fakePlayer->updateRotation(t.delta / pl->m_gameState.m_timeWarp);
+        fakePlayer->update(t.delta);
+        fakePlayer->updateInternalActions(t.delta);
+        fakePlayer->updateRotation(t.delta);
 
         cocos2d::ccColor4F color = hold ? t.color1 : t.color2;
 
