@@ -98,7 +98,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         fakePlayer->m_collisionLogLeft->removeAllObjects();
         fakePlayer->m_collisionLogRight->removeAllObjects();
 
-        pl->checkCollisions(fakePlayer, t.delta, false);
+        pl->checkCollisions(fakePlayer, t.delta / pl->m_gameState.m_timeWarp, false);
 
         if (t.cancelTrajectory) {
             fakePlayer->updatePlayerScale();
@@ -112,11 +112,9 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
                 (inverted ? !realPlayer->m_isGoingLeft : realPlayer->m_isGoingLeft) ? fakePlayer->pushButton(static_cast<PlayerButton>(2)) : fakePlayer->pushButton(static_cast<PlayerButton>(3));
         }
 
-        fakePlayer->update(t.delta);
-        // fakePlayer->updateSpecial(t.delta);
-        fakePlayer->updateInternalActions(t.delta);
-        fakePlayer->updateRotation(t.delta);
-        // fakePlayer->updatePlayerScale();
+        fakePlayer->update(t.delta / pl->m_gameState.m_timeWarp);
+        fakePlayer->updateInternalActions(t.delta / pl->m_gameState.m_timeWarp);
+        fakePlayer->updateRotation(t.delta / pl->m_gameState.m_timeWarp);
 
         cocos2d::ccColor4F color = hold ? t.color1 : t.color2;
 
@@ -128,7 +126,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         // if (i >= t.length - 40)
         //     color.a = (t.length - i) / 40.f;
 
-        t.trajectoryNode()->drawSegment(prevPos, fakePlayer->getPosition(), 0.6f, color);
+        t.trajectoryNode()->drawSegment(prevPos, fakePlayer->getPosition(), 0.5f, color);
     }
     t.p1Collided.clear();
     t.p1Collided.shrink_to_fit();
@@ -140,17 +138,25 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
 void ShowTrajectory::drawPlayerHitbox(PlayerObject* player, CCDrawNode* drawNode) {
     cocos2d::CCRect bigRect = player->getObjectRect();
     cocos2d::CCRect smallRect = player->getObjectRect(0.3, 0.3);
+    std::vector<cocos2d::CCPoint> vertices;
+    
+    vertices = ShowTrajectory::getVerticesRot(player, bigRect, t.deathRotation);
+    drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), t.hitboxThickness, ccc4f(0.5,0,0,1));
+    
+    drawNode->drawCircle(player->getPosition(),bigRect.size.height/2.0,ccc4f(0,0,0,0),0.35,ccc4f(1,0,0,1),25);
 
-    std::vector<cocos2d::CCPoint> vertices = ShowTrajectory::getVertices(player, bigRect, t.deathRotation);
+    vertices = ShowTrajectory::getVertices(player, bigRect);
     // drawNode->drawPolygon(&vertices[0], 4, ccc4f(t.color2.r, t.color2.g, t.color2.b, 0.2f), 0.5, t.color2);
-    drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), 0.5, ccc4f(1,0,0,1));
-
-    vertices = ShowTrajectory::getVertices(player, smallRect, t.deathRotation);
+    drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), t.hitboxThickness, ccc4f(1,0,0,1));
+    
+    vertices = ShowTrajectory::getVertices(player, smallRect);
     // drawNode->drawPolygon(&vertices[0], 4, ccc4f(t.color3.r, t.color3.g, t.color3.b, 0.2f), 0.35, ccc4f(t.color3.r, t.color3.g, t.color3.b, 0.55f));
-    drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), 0.35, ccc4f(0,0,1,1));
+    drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), t.hitboxThickness, ccc4f(0,0,1,1));
+
+
 }
 
-std::vector<cocos2d::CCPoint> ShowTrajectory::getVertices(PlayerObject* player, cocos2d::CCRect rect, float rotation) {
+std::vector<cocos2d::CCPoint> ShowTrajectory::getVertices(PlayerObject* player, cocos2d::CCRect rect){
     std::vector<cocos2d::CCPoint> vertices = {
         ccp(rect.getMinX(), rect.getMaxY()),
         ccp(rect.getMaxX(), rect.getMaxY()),
@@ -158,10 +164,21 @@ std::vector<cocos2d::CCPoint> ShowTrajectory::getVertices(PlayerObject* player, 
         ccp(rect.getMinX(), rect.getMinY())
     };
 
-    // cocos2d::CCPoint center = ccp(
-    //     (rect.getMinX() + rect.getMaxX()) / 2.f,
-    //     (rect.getMinY() + rect.getMaxY()) / 2.f
-    // );
+    return vertices;
+}
+
+std::vector<cocos2d::CCPoint> ShowTrajectory::getVerticesRot(PlayerObject* player, cocos2d::CCRect rect, float rotation) {
+    std::vector<cocos2d::CCPoint> vertices = {
+        ccp(rect.getMinX(), rect.getMaxY()),
+        ccp(rect.getMaxX(), rect.getMaxY()),
+        ccp(rect.getMaxX(), rect.getMinY()),
+        ccp(rect.getMinX(), rect.getMinY())
+    };
+
+    cocos2d::CCPoint center = ccp(
+        (rect.getMinX() + rect.getMaxX()) / 2.f,
+        (rect.getMinY() + rect.getMaxY()) / 2.f
+    );
 
     // float size = static_cast<int>(rect.getMaxX() - rect.getMinX());
 
@@ -186,17 +203,17 @@ std::vector<cocos2d::CCPoint> ShowTrajectory::getVertices(PlayerObject* player, 
     //     }
     // }
 
-    // float angle = CC_DEGREES_TO_RADIANS(rotation * -1.f);
-    // for (auto& vertex : vertices) {
-    //     float x = vertex.x - center.x;
-    //     float y = vertex.y - center.y;
+    float angle = CC_DEGREES_TO_RADIANS(rotation * -1.f);
+    for (auto& vertex : vertices) {
+        float x = vertex.x - center.x;
+        float y = vertex.y - center.y;
 
-    //     float xNew = center.x + (x * cos(angle)) - (y * sin(angle));
-    //     float yNew = center.y + (x * sin(angle)) + (y * cos(angle));
+        float xNew = center.x + (x * cos(angle)) - (y * sin(angle));
+        float yNew = center.y + (x * sin(angle)) + (y * cos(angle));
 
-    //     vertex.x = xNew;
-    //     vertex.y = yNew;
-    // }
+        vertex.x = xNew;
+        vertex.y = yNew;
+    }
 
     return vertices;
 }
@@ -466,16 +483,29 @@ class $modify(GJBaseGameLayer) {
         if (t.creatingTrajectory) {
             int p1Contains = std::count(t.p1Collided.begin(),t.p1Collided.end(),p1);
             int p2Contains = std::count(t.p2Collided.begin(),t.p2Collided.end(),p1);
-            
-            if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
-                ShowTrajectory::handlePortal(p0, p1->m_objectID);
-                ShowTrajectory::handlePad(p0,p1);
-                t.p1Collided.push_back(p1);
-
-            }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer2)){
-                ShowTrajectory::handlePortal(p0, p1->m_objectID);
-                ShowTrajectory::handlePad(p0,p1);
-                t.p2Collided.push_back(p1);
+            bool player2 = PlayLayer::get()->m_player2 == p0;
+            if(!player2){
+                if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
+                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePad(p0,p1);
+                    t.p1Collided.push_back(p1);
+    
+                }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer1)){
+                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePad(p0,p1);
+                    t.p2Collided.push_back(p1);
+                }
+            }else{
+                if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer2)){
+                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePad(p0,p1);
+                    t.p1Collided.push_back(p1);
+    
+                }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer2)){
+                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePad(p0,p1);
+                    t.p2Collided.push_back(p1);
+                }
             }
             return false;
         }
@@ -496,14 +526,26 @@ class $modify(GJBaseGameLayer) {
         }else{
             int p1Contains = std::count(t.p1Collided.begin(),t.p1Collided.end(),p1);
             int p2Contains = std::count(t.p2Collided.begin(),t.p2Collided.end(),p1);
-            
-            if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
-                ShowTrajectory::handlePortal(p0, p1->m_objectID);
-                t.p1Collided.push_back(p1);
+            bool player2 = PlayLayer::get()->m_player2 == p0;
 
-            }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer2)){
-                ShowTrajectory::handlePortal(p0, p1->m_objectID);
-                t.p2Collided.push_back(p1);
+            if(!player2){
+                if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
+                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    t.p1Collided.push_back(p1);
+    
+                }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer1)){
+                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    t.p2Collided.push_back(p1);
+                }
+            }else{
+                if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer2)){
+                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    t.p1Collided.push_back(p1);
+    
+                }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer2)){
+                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    t.p2Collided.push_back(p1);
+                }
             }
         }
     }

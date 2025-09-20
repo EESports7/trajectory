@@ -52,7 +52,8 @@ public:
 
     static void drawPlayerHitbox(PlayerObject* player, CCDrawNode* drawNode);
 
-    static std::vector<cocos2d::CCPoint> getVertices(PlayerObject* player, cocos2d::CCRect rect, float rotation);
+    static std::vector<cocos2d::CCPoint> getVerticesRot(PlayerObject* player, cocos2d::CCRect rect, float rotation);
+    static std::vector<cocos2d::CCPoint> getVertices(PlayerObject* player, cocos2d::CCRect rect);
 
     static void handlePortal(PlayerObject* player, int id);
     static void handlePad(PlayerObject* player, EffectGameObject* obj);
@@ -70,6 +71,8 @@ public:
     bool creatingTrajectory = false;
     bool cancelTrajectory = false;
     bool miniScale = false;
+
+    double hitboxThickness = 0.5;
 
     float deathRotation = 0.f;
     float delta = 0.25f;
