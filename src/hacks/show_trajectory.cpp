@@ -13,8 +13,10 @@ ShowTrajectory& t = ShowTrajectory::get();
 
 $execute {
 
-    t.color1 = ccc4FFromccc3B(Mod::get()->getSavedValue<cocos2d::ccColor3B>("trajectory_color1"));
-    t.color2 = ccc4FFromccc3B(Mod::get()->getSavedValue<cocos2d::ccColor3B>("trajectory_color2"));
+    // t.color1 = ccc4FFromccc3B(Mod::get()->getSavedValue<cocos2d::ccColor3B>("trajectory_color1"));
+    // t.color2 = ccc4FFromccc3B(Mod::get()->getSavedValue<cocos2d::ccColor3B>("trajectory_color2"));
+    t.color1 = ccc4f(0,1,0,1);
+    t.color2 = ccc4f(0,1,1,1);
     t.length = geode::utils::numFromString<int>(Mod::get()->getSavedValue<std::string>("trajectory_length")).unwrapOr(0);
     t.updateMergedColor();
 
@@ -68,59 +70,16 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
 
     bool player2 = pl->m_player2 == realPlayer;
 
-    // PlayerData playerData = PlayerPracticeFixes::saveData(realPlayer);
     fakePlayer->copyAttributes(realPlayer);
-    // PlayerPracticeFixes::applyData(fakePlayer, playerData, false, false);
+    PlayerData playerData = PlayerPracticeFixes::saveData(realPlayer);
+    PlayerPracticeFixes::applyData(fakePlayer, playerData, false, true);
 
     fakePlayer->setVisible(false);
 
-    fakePlayer->m_gravityMod = realPlayer->m_gravityMod;
-    fakePlayer->m_isOnGround = realPlayer->m_isOnGround;
-
-    fakePlayer->m_dashRing = realPlayer->m_dashRing;
-    fakePlayer->m_dashStartTime = realPlayer->m_dashStartTime;
-    fakePlayer->m_dashAngle = realPlayer->m_dashAngle;
-    fakePlayer->m_isDashing = realPlayer->m_isDashing;
-    fakePlayer->m_wasRobotJump = realPlayer->m_wasRobotJump;
-
+    fakePlayer->m_robotAnimation1Enabled = false;
+    fakePlayer->m_robotAnimation2Enabled = false;
+    fakePlayer->m_spiderAnimationEnabled = false;
     fakePlayer->m_playEffects = false;
-
-    fakePlayer->m_slopeAngle = realPlayer->m_slopeAngle;
-    fakePlayer->m_slopeAngleRadians = realPlayer->m_slopeAngleRadians;
-    fakePlayer->m_slopeDirection = realPlayer->m_slopeDirection;
-    fakePlayer->m_slopeEndTime = realPlayer->m_slopeEndTime;
-    fakePlayer->m_slopeFlipGravityRelated = realPlayer->m_slopeFlipGravityRelated;
-    fakePlayer->m_slopeIsHazard = realPlayer->m_slopeIsHazard;
-    fakePlayer->m_slopeRotation = realPlayer->m_slopeRotation;
-    fakePlayer->m_slopeSlidingMaybeRotated = realPlayer->m_slopeSlidingMaybeRotated;
-    fakePlayer->m_slopeStartTime = realPlayer->m_slopeStartTime;
-    fakePlayer->m_slopeUphill = realPlayer->m_slopeUphill;
-    fakePlayer->m_slopeVelocity = realPlayer->m_slopeVelocity;
-    fakePlayer->m_isOnSlope = realPlayer->m_isOnSlope;
-    fakePlayer->m_maybeSlopeForce = realPlayer->m_maybeSlopeForce;
-    fakePlayer->m_wasOnSlope = realPlayer->m_wasOnSlope;
-    fakePlayer->m_isGripSlope = realPlayer->m_isGripSlope;
-    fakePlayer->m_currentSlope2 = realPlayer->m_currentSlope2;
-    fakePlayer->m_currentSlope3 = realPlayer->m_currentSlope3;
-    fakePlayer->m_currentSlope = realPlayer->m_currentSlope;
-    fakePlayer->m_currentSlopeYVelocity = realPlayer->m_currentSlopeYVelocity;
-    fakePlayer->m_isCurrentSlopeTop = realPlayer->m_isCurrentSlopeTop;
-    fakePlayer->m_collidingWithSlopeId = realPlayer->m_collidingWithSlopeId;
-    fakePlayer->m_isCollidingWithSlope = realPlayer->m_isCollidingWithSlope;
-    fakePlayer->m_maybeUpsideDownSlope = realPlayer->m_maybeUpsideDownSlope;
-    fakePlayer->m_yVelocityBeforeSlope = realPlayer->m_yVelocityBeforeSlope;
-    fakePlayer->m_maybeGoingCorrectSlopeDirection = realPlayer->m_maybeGoingCorrectSlopeDirection;
-    fakePlayer->m_unk3d0 = realPlayer->m_unk3d0;
-    fakePlayer->m_unk3e0 = realPlayer->m_unk3e0;
-    fakePlayer->m_unk3e1 = realPlayer->m_unk3e1;
-
-    fakePlayer->m_holdingButtons = realPlayer->m_holdingButtons;
-    fakePlayer->m_isSideways = realPlayer->m_isSideways;
-    fakePlayer->m_isGoingLeft = realPlayer->m_isGoingLeft;
-
-    fakePlayer->m_reverseRelated = realPlayer->m_reverseRelated;
-    fakePlayer->m_maybeReverseSpeed = realPlayer->m_maybeReverseSpeed;
-    fakePlayer->m_maybeReverseAcceleration = realPlayer->m_maybeReverseAcceleration;
 
     t.cancelTrajectory = false;
 
@@ -183,10 +142,12 @@ void ShowTrajectory::drawPlayerHitbox(PlayerObject* player, CCDrawNode* drawNode
     cocos2d::CCRect smallRect = player->getObjectRect(0.3, 0.3);
 
     std::vector<cocos2d::CCPoint> vertices = ShowTrajectory::getVertices(player, bigRect, t.deathRotation);
-    drawNode->drawPolygon(&vertices[0], 4, ccc4f(t.color2.r, t.color2.g, t.color2.b, 0.2f), 0.5, t.color2);
+    // drawNode->drawPolygon(&vertices[0], 4, ccc4f(t.color2.r, t.color2.g, t.color2.b, 0.2f), 0.5, t.color2);
+    drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), 0.5, ccc4f(1,0,0,1));
 
     vertices = ShowTrajectory::getVertices(player, smallRect, t.deathRotation);
-    drawNode->drawPolygon(&vertices[0], 4, ccc4f(t.color3.r, t.color3.g, t.color3.b, 0.2f), 0.35, ccc4f(t.color3.r, t.color3.g, t.color3.b, 0.55f));
+    // drawNode->drawPolygon(&vertices[0], 4, ccc4f(t.color3.r, t.color3.g, t.color3.b, 0.2f), 0.35, ccc4f(t.color3.r, t.color3.g, t.color3.b, 0.55f));
+    drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), 0.35, ccc4f(0,0,1,1));
 }
 
 std::vector<cocos2d::CCPoint> ShowTrajectory::getVertices(PlayerObject* player, cocos2d::CCRect rect, float rotation) {
@@ -251,7 +212,8 @@ void ShowTrajectory::updateMergedColor() {
     newColor.g = std::min(1.f, newColor.g + 0.45f);
     newColor.b = std::min(1.f, newColor.b + 0.45f);
 
-    color3 = newColor;
+    // color3 = newColor;
+    color3 = ccc4f(1,1,0,1);
 }
 
 void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
@@ -303,8 +265,8 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         break;
     case 2926:
         player->flipGravity(!player->m_isUpsideDown, true);
-        player->m_yVelocity /= 2.0;
-        // player->m_fallSpeed /= 2.0;
+        // player->m_yVelocity /= 2.0;
+        player->m_fallSpeed /= 2.0;
     case 200:
         player->m_playerSpeed = 0.7f;
         player->m_speedMultiplier = 5.980002;
@@ -419,7 +381,7 @@ class $modify(PlayLayer) {
         t.fakePlayer2->setVisible(false);
         m_objectLayer->addChild(t.fakePlayer2);
 
-        m_objectLayer->addChild(t.trajectoryNode(), 500);
+        m_objectLayer->addChild(t.trajectoryNode(), INT_MAX);
     }
 
     void destroyPlayer(PlayerObject * player, GameObject * gameObject) {

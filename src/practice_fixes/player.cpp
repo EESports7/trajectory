@@ -423,7 +423,7 @@ void PlayerPracticeFixes::applyData(PlayerObject* player, PlayerData data, bool 
     player->m_maybeReverseSpeed = data.m_maybeReverseSpeed;
     player->m_maybeReverseAcceleration = data.m_maybeReverseAcceleration;
     player->m_xVelocityRelated2 = data.m_xVelocityRelated2;
-    if (!isFakePlayer) player->m_isDashing = data.m_isDashing;
+    player->m_isDashing = data.m_isDashing;
     player->m_unk9e8 = data.m_unk9e8;
     player->m_groundObjectMaterial = data.m_groundObjectMaterial;
     player->m_vehicleSize = data.m_vehicleSize;
@@ -507,9 +507,11 @@ void PlayerPracticeFixes::applyData(PlayerObject* player, PlayerData data, bool 
     player->m_isOutOfBounds = data.m_isOutOfBounds;
     player->m_fallStartY = data.m_fallStartY;
     player->m_disablePlayerSqueeze = data.m_disablePlayerSqueeze;
-    player->m_robotAnimation1Enabled = data.m_robotAnimation1Enabled;
-    player->m_robotAnimation2Enabled = data.m_robotAnimation2Enabled;
-    player->m_spiderAnimationEnabled = data.m_spiderAnimationEnabled;
+    if (!isFakePlayer){
+        player->m_robotAnimation1Enabled = data.m_robotAnimation1Enabled;
+        player->m_robotAnimation2Enabled = data.m_robotAnimation2Enabled;
+        player->m_spiderAnimationEnabled = data.m_spiderAnimationEnabled;
+    }
     player->m_ignoreDamage = data.m_ignoreDamage;
     player->m_enable22Changes = data.m_enable22Changes;
 
