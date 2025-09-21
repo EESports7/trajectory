@@ -266,6 +266,7 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
                 targetGravity = !obj->isFacingDown();
             }
 
+            player->flipGravity(targetGravity,true);
             player->spiderTestJump(false);
             break;
     }
