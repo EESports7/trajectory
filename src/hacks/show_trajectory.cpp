@@ -112,8 +112,9 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
                 (inverted ? !realPlayer->m_isGoingLeft : realPlayer->m_isGoingLeft) ? fakePlayer->pushButton(static_cast<PlayerButton>(2)) : fakePlayer->pushButton(static_cast<PlayerButton>(3));
         }
 
-        fakePlayer->update(t.delta);
+        fakePlayer->m_totalTime += t.delta;
         fakePlayer->updateInternalActions(t.delta);
+        fakePlayer->update(t.delta);
         fakePlayer->updateRotation(t.delta);
 
         cocos2d::ccColor4F color = hold ? t.color1 : t.color2;
@@ -128,6 +129,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
 
         t.trajectoryNode()->drawSegment(prevPos, fakePlayer->getPosition(), 0.5f, color);
     }
+
     t.p1Collided.clear();
     t.p1Collided.shrink_to_fit();
 
@@ -248,16 +250,30 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
             player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,34),true,0);
             break;
         case 67:
-            targetGravity = !obj->isFacingDown();
+            if(player->m_isSideways){
+                targetGravity = !obj->isFacingLeft();
+            }else{
+                targetGravity = !obj->isFacingDown();
+            }
+            
             player->propellPlayer(0.8,true,0);
             player->flipGravity(targetGravity,true);
             break;
+        case 3005:
+            if(player->m_isSideways){
+                targetGravity = !obj->isFacingLeft();
+            }else{
+                targetGravity = !obj->isFacingDown();
+            }
+
+            player->spiderTestJump(false);
+            break;
     }
 }
-void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
-    if (!portalIDs.contains(id)) return;
+void ShowTrajectory::handlePortal(PlayerObject* player, EffectGameObject* obj) {
+    if (!portalIDs.contains(obj->m_objectID)) return;
 
-    switch (id) {
+    switch (obj->m_objectID) {
     case 101:
         player->togglePlayerScale(true, true);
         player->updatePlayerScale();
@@ -270,20 +286,17 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->flipGravity(true, true);
         if(!player->m_isUpsideDown){
             player->m_yVelocity /= 2.0;
-            // player->m_fallSpeed /= 2.0;
         }
         break;
     case 10:
         player->flipGravity(false, true);
         if(player->m_isUpsideDown){
             player->m_yVelocity /= 2.0;
-            // player->m_fallSpeed /= 2.0;
         }
         break;
     case 2926:
         player->flipGravity(!player->m_isUpsideDown, true);
-        // player->m_yVelocity /= 2.0;
-        player->m_fallSpeed /= 2.0;
+        break;
     case 200:
         player->m_playerSpeed = 0.7f;
         player->m_speedMultiplier = 5.980002;
@@ -315,33 +328,58 @@ void ShowTrajectory::handlePortal(PlayerObject* player, int id) {
         player->m_gravity = 0.961199;
         break;
     case 12:
-        player->toggleFlyMode(false, false);
-        player->toggleRollMode(false, false);
-        player->toggleBirdMode(false, false);
-        player->toggleDartMode(false, false);
-        player->toggleRobotMode(false, false);
-        player->toggleSpiderMode(false, false);
-        player->toggleSwingMode(false, false);
+        player->m_lastActivatedPortal = obj;
+        player->m_lastPortalPos = obj->getPosition();
+    
+        player->switchedToMode(GameObjectType::CubePortal);
         break;
     case 13:
+        player->m_lastActivatedPortal = obj;
+        player->m_lastPortalPos = obj->getPosition();
+
+        player->switchedToMode(GameObjectType::ShipPortal);
         player->toggleFlyMode(true,true);
         break;
     case 47:
+        player->m_lastActivatedPortal = obj;
+        player->m_lastPortalPos = obj->getPosition();
+    
+        player->switchedToMode(GameObjectType::BallPortal);
         player->toggleRollMode(true,true);
         break;
     case 111:
+        player->m_lastActivatedPortal = obj;
+        player->m_lastPortalPos = obj->getPosition();
+    
+        player->switchedToMode(GameObjectType::UfoPortal);
         player->toggleBirdMode(true,true);
         break;
     case 660:
+        player->m_lastActivatedPortal = obj;
+        player->m_lastPortalPos = obj->getPosition();
+        
+        player->switchedToMode(GameObjectType::WavePortal);
         player->toggleDartMode(true,true);
         break;
     case 745:
+        player->m_lastActivatedPortal = obj;
+        player->m_lastPortalPos = obj->getPosition();
+    
+        player->switchedToMode(GameObjectType::RobotPortal);
         player->toggleRobotMode(true,true);
         break;
     case 1331:
+        player->m_lastActivatedPortal = obj;
+        player->m_lastPortalPos = obj->getPosition();
+    
+        player->switchedToMode(GameObjectType::SpiderPortal);
         player->toggleSpiderMode(true,true);
         break;
     case 1933:
+        player->m_lastActivatedPortal = obj;
+        player->m_lastPortalPos = obj->getPosition();
+        
+        player->switchedToMode(GameObjectType::SwingPortal);
         player->toggleSwingMode(true,true);
         break;
     }
@@ -486,23 +524,23 @@ class $modify(GJBaseGameLayer) {
             
             if(!p0->m_isSecondPlayer){
                 if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
-                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePortal(p0, p1);
                     ShowTrajectory::handlePad(p0,p1);
                     t.p1Collided.push_back(p1);
     
                 }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer1)){
-                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePortal(p0, p1);
                     ShowTrajectory::handlePad(p0,p1);
                     t.p2Collided.push_back(p1);
                 }
             }else{
                 if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer2)){
-                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePortal(p0, p1);
                     ShowTrajectory::handlePad(p0,p1);
                     t.p1Collided.push_back(p1);
     
                 }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer2)){
-                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePortal(p0, p1);
                     ShowTrajectory::handlePad(p0,p1);
                     t.p2Collided.push_back(p1);
                 }
@@ -529,20 +567,20 @@ class $modify(GJBaseGameLayer) {
 
             if(!p0->m_isSecondPlayer){
                 if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer1)){
-                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePortal(p0, p1);
                     t.p1Collided.push_back(p1);
     
                 }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer1)){
-                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePortal(p0, p1);
                     t.p2Collided.push_back(p1);
                 }
             }else{
                 if(t.fakePlayer1 == p0 && p1Contains == 0 && !(p1->m_activatedByPlayer2)){
-                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePortal(p0, p1);
                     t.p1Collided.push_back(p1);
     
                 }else if(t.fakePlayer2 == p0 && p2Contains == 0 && !(p1->m_activatedByPlayer2)){
-                    ShowTrajectory::handlePortal(p0, p1->m_objectID);
+                    ShowTrajectory::handlePortal(p0, p1);
                     t.p2Collided.push_back(p1);
                 }
             }
@@ -592,7 +630,6 @@ class $modify(PlayerObject) {
         if (!t.creatingTrajectory)
             PlayerObject::ringJump(p0, p1);
     }
-
 };
 
 class $modify(HardStreak) {
