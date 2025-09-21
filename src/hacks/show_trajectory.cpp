@@ -261,9 +261,9 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
             break;
         case 3005:
             if(player->m_isSideways){
-                targetGravity = !obj->isFacingLeft();
+                targetGravity = obj->isFacingLeft();
             }else{
-                targetGravity = !obj->isFacingDown();
+                targetGravity = obj->isFacingDown();
             }
 
             player->flipGravity(targetGravity,true);
