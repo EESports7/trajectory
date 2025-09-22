@@ -144,9 +144,11 @@ void ShowTrajectory::drawPlayerHitbox(PlayerObject* player, CCDrawNode* drawNode
     
     vertices = ShowTrajectory::getVerticesRot(player, bigRect, t.deathRotation);
     drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), t.hitboxThickness, ccc4f(0.5,0,0,1));
-    
-    drawNode->drawCircle(player->getPosition(),bigRect.size.height/2.0,ccc4f(0,0,0,0),0.35,ccc4f(1,0,0,1),25);
 
+    if(t.useCircle){
+        drawNode->drawCircle(player->getPosition(),bigRect.size.height/2.0,ccc4f(0,0,0,0),0.35,ccc4f(1,0,0,1),25);
+    }
+    
     vertices = ShowTrajectory::getVertices(player, bigRect);
     // drawNode->drawPolygon(&vertices[0], 4, ccc4f(t.color2.r, t.color2.g, t.color2.b, 0.2f), 0.5, t.color2);
     drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), t.hitboxThickness, ccc4f(1,0,0,1));
@@ -413,6 +415,8 @@ class $modify(PlayLayer) {
 
     void setupHasCompleted() {
         PlayLayer::setupHasCompleted();
+
+        t.useCircle = GJBaseGameLayer::get()->m_levelSettings->m_fixRadiusCollision;
 
         t.fakePlayer1 = nullptr;
         t.fakePlayer2 = nullptr;
