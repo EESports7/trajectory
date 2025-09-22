@@ -285,15 +285,9 @@ void ShowTrajectory::handlePortal(PlayerObject* player, EffectGameObject* obj) {
         break;
     case 11:
         player->flipGravity(true, true);
-        if(!player->m_isUpsideDown){
-            player->m_yVelocity /= 2.0;
-        }
         break;
     case 10:
         player->flipGravity(false, true);
-        if(player->m_isUpsideDown){
-            player->m_yVelocity /= 2.0;
-        }
         break;
     case 2926:
         player->flipGravity(!player->m_isUpsideDown, true);
