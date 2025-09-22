@@ -71,6 +71,7 @@ public:
     bool creatingTrajectory = false;
     bool cancelTrajectory = false;
     bool miniScale = false;
+    bool useCircle = false;
 
     double hitboxThickness = 0.5;
 
