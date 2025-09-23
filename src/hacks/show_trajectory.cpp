@@ -244,12 +244,24 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
     switch (obj->m_objectID) {
         case 140:
             player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,9),true,0);
+
+            if(obj->m_isReverse){
+                player->reversePlayer(obj);
+            }
             break;
         case 35:
             player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,8),true,0);
+
+            if(obj->m_isReverse){
+                player->reversePlayer(obj);
+            }
             break;
         case 1332:
             player->propellPlayer(GJBaseGameLayer::get()->getBumpMod(player,34),true,0);
+
+            if(obj->m_isReverse){
+                player->reversePlayer(obj);
+            }
             break;
         case 67:
             if(player->m_isSideways){
@@ -260,6 +272,10 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
             
             player->propellPlayer(0.8,true,0);
             player->flipGravity(targetGravity,true);
+
+            if(obj->m_isReverse){
+                player->reversePlayer(obj);
+            }
             break;
         case 3005:
             if(player->m_isSideways){
@@ -270,6 +286,10 @@ void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
 
             player->flipGravity(targetGravity,true);
             player->spiderTestJump(false);
+
+            if(obj->m_isReverse){
+                player->reversePlayer(obj);
+            }
             break;
     }
 }
