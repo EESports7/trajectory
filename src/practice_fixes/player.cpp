@@ -6,12 +6,12 @@ PlayerData PlayerPracticeFixes::saveData(PlayerObject* player) {
     #ifdef GEODE_IS_WINDOWS
 
     data.m_rotateObjectsRelated.insert(player->m_rotateObjectsRelated.begin(), player->m_rotateObjectsRelated.end());
-    data.m_maybeRotatedObjectsMap.insert(player->m_maybeRotatedObjectsMap.begin(), player->m_maybeRotatedObjectsMap.end());
+    data.m_potentialSlopeMap.insert(player->m_potentialSlopeMap.begin(), player->m_potentialSlopeMap.end());
     data.m_touchedRings.insert(player->m_touchedRings.begin(), player->m_touchedRings.end());
     data.m_ringRelatedSet.insert(player->m_ringRelatedSet.begin(), player->m_ringRelatedSet.end());
     data.m_jumpPadRelated.insert(player->m_jumpPadRelated.begin(), player->m_jumpPadRelated.end());
     data.m_holdingButtons.insert(player->m_holdingButtons.begin(), player->m_holdingButtons.end());
-
+    
     for (const auto& el : player->m_playerFollowFloats)
         data.m_playerFollowFloats.push_back(el);
 
@@ -68,7 +68,7 @@ PlayerData PlayerPracticeFixes::saveData(PlayerObject* player) {
     data.m_isCollidingWithSlope = player->m_isCollidingWithSlope;
     data.m_isBallRotating = player->m_isBallRotating;
     data.m_unk669 = player->m_unk669;
-    data.m_currentSlope3 = player->m_currentSlope3;
+    data.m_currentPotentialSlope = player->m_currentPotentialSlope;
     data.m_currentSlope = player->m_currentSlope;
     data.unk_584 = player->unk_584;
     data.m_collidingWithSlopeId = player->m_collidingWithSlopeId;
@@ -273,7 +273,7 @@ void PlayerPracticeFixes::applyData(PlayerObject* player, PlayerData data, bool 
     #ifdef GEODE_IS_WINDOWS
 
     player->m_rotateObjectsRelated.insert(data.m_rotateObjectsRelated.begin(), data.m_rotateObjectsRelated.end());
-    player->m_maybeRotatedObjectsMap.insert(data.m_maybeRotatedObjectsMap.begin(), data.m_maybeRotatedObjectsMap.end());
+    player->m_potentialSlopeMap.insert(data.m_potentialSlopeMap.begin(), data.m_potentialSlopeMap.end());
     player->m_touchedRings.insert(data.m_touchedRings.begin(), data.m_touchedRings.end());
     player->m_ringRelatedSet.insert(data.m_ringRelatedSet.begin(), data.m_ringRelatedSet.end());
     player->m_jumpPadRelated.insert(data.m_jumpPadRelated.begin(), data.m_jumpPadRelated.end());
@@ -335,7 +335,7 @@ void PlayerPracticeFixes::applyData(PlayerObject* player, PlayerData data, bool 
     player->m_isCollidingWithSlope = data.m_isCollidingWithSlope;
     player->m_isBallRotating = data.m_isBallRotating;
     player->m_unk669 = data.m_unk669;
-    player->m_currentSlope3 = data.m_currentSlope3;
+    player->m_currentPotentialSlope = data.m_currentPotentialSlope;
     player->m_currentSlope = data.m_currentSlope;
     player->unk_584 = data.unk_584;
     player->m_collidingWithSlopeId = data.m_collidingWithSlopeId;

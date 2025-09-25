@@ -86,7 +86,7 @@ struct button {
 struct PlayerData {
 #ifdef GEODE_IS_WINDOWS
     std::unordered_map<int, GJPointDouble> m_rotateObjectsRelated;
-    std::unordered_map<int, GameObject*> m_maybeRotatedObjectsMap;
+    std::unordered_map<int, GameObject*> m_potentialSlopeMap;
     std::unordered_set<int> m_touchedRings;
     std::unordered_set<int> m_ringRelatedSet;
     std::map<int, bool> m_jumpPadRelated;
@@ -139,7 +139,7 @@ struct PlayerData {
     bool m_isCollidingWithSlope;
     bool m_isBallRotating;
     bool m_unk669;
-    GameObject* m_currentSlope3;
+    GameObject* m_currentPotentialSlope;
     GameObject* m_currentSlope;
     double unk_584;
     int m_collidingWithSlopeId;

@@ -127,14 +127,17 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         // if (i >= t.length - 40)
         //     color.a = (t.length - i) / 40.f;
 
-        t.trajectoryNode()->drawSegment(prevPos, fakePlayer->getPosition(), 0.5f, color);
+        t.trajectoryNode()->drawSegment(prevPos, fakePlayer->getPosition(), t.hitboxThickness, color);
     }
 
-    t.p1Collided.clear();
-    t.p1Collided.shrink_to_fit();
+    if(t.fakePlayer1 == fakePlayer){
+        t.p1Collided.clear();
+        t.p1Collided.shrink_to_fit();
+    }else{
+        t.p2Collided.clear();
+        t.p2Collided.shrink_to_fit();
+    }
 
-    t.p2Collided.clear();
-    t.p2Collided.shrink_to_fit();
 }
 
 void ShowTrajectory::drawPlayerHitbox(PlayerObject* player, CCDrawNode* drawNode) {
