@@ -149,7 +149,7 @@ void ShowTrajectory::drawPlayerHitbox(PlayerObject* player, CCDrawNode* drawNode
     drawNode->drawPolygon(&vertices[0], 4, ccc4f(0,0,0,0), t.hitboxThickness, ccc4f(0.5,0,0,1));
 
     if(t.useCircle){
-        drawNode->drawCircle(player->getPosition(),bigRect.size.height/2.0,ccc4f(0,0,0,0),0.35,ccc4f(1,0,0,1),25);
+        drawNode->drawCircle(player->getPosition(),(bigRect.size.height/2.0) - t.hitboxThickness,ccc4f(0,0,0,0),t.hitboxThickness,ccc4f(1,0,0,1),25);
     }
     
     vertices = ShowTrajectory::getVertices(player, bigRect);
@@ -164,22 +164,33 @@ void ShowTrajectory::drawPlayerHitbox(PlayerObject* player, CCDrawNode* drawNode
 }
 
 std::vector<cocos2d::CCPoint> ShowTrajectory::getVertices(PlayerObject* player, cocos2d::CCRect rect){
+    auto offset = t.hitboxThickness;
+
     std::vector<cocos2d::CCPoint> vertices = {
-        ccp(rect.getMinX(), rect.getMaxY()),
-        ccp(rect.getMaxX(), rect.getMaxY()),
-        ccp(rect.getMaxX(), rect.getMinY()),
-        ccp(rect.getMinX(), rect.getMinY())
+        ccp(rect.getMinX() + offset, rect.getMaxY() - offset),
+        ccp(rect.getMaxX() - offset, rect.getMaxY() - offset),
+        ccp(rect.getMaxX() - offset, rect.getMinY() + offset),
+        ccp(rect.getMinX() + offset, rect.getMinY() + offset)
     };
+
+    // std::vector<cocos2d::CCPoint> vertices = {
+    //     ccp(rect.getMinX(), rect.getMaxY()),
+    //     ccp(rect.getMaxX(), rect.getMaxY()),
+    //     ccp(rect.getMaxX(), rect.getMinY()),
+    //     ccp(rect.getMinX(), rect.getMinY())
+    // };
 
     return vertices;
 }
 
 std::vector<cocos2d::CCPoint> ShowTrajectory::getVerticesRot(PlayerObject* player, cocos2d::CCRect rect, float rotation) {
+    auto offset = t.hitboxThickness;
+
     std::vector<cocos2d::CCPoint> vertices = {
-        ccp(rect.getMinX(), rect.getMaxY()),
-        ccp(rect.getMaxX(), rect.getMaxY()),
-        ccp(rect.getMaxX(), rect.getMinY()),
-        ccp(rect.getMinX(), rect.getMinY())
+        ccp(rect.getMinX() + offset, rect.getMaxY() - offset),
+        ccp(rect.getMaxX() - offset, rect.getMaxY() - offset),
+        ccp(rect.getMaxX() - offset, rect.getMinY() + offset),
+        ccp(rect.getMinX() + offset, rect.getMinY() + offset)
     };
 
     cocos2d::CCPoint center = ccp(
@@ -239,6 +250,23 @@ void ShowTrajectory::updateMergedColor() {
     // color3 = newColor;
     color3 = ccc4f(1,1,0,1);
 }
+
+// void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
+//     if (!orbIDs.contains(obj->m_objectID)) return;
+    
+//     double yVel = player->m_yVelocity;
+//     int32_t flipMod = 
+//     switch (obj->m_objectID) {
+//         case 84:
+//             yVel *= 0.8;
+
+//             player->setYVelocity()
+//             player->flipGravity(!player->m_isUpsideDown, true);
+
+//         break;
+        
+//     }
+// }
 
 void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
     if (!padIDs.contains(obj->m_objectID)) return;
