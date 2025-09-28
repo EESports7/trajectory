@@ -103,7 +103,6 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         fakePlayer->m_collisionLogRight->removeAllObjects();
 
         pl->checkCollisions(fakePlayer, t.delta, false);
-
         
         if (t.cancelTrajectory) {
             fakePlayer->updatePlayerScale();
@@ -124,6 +123,10 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
             hold ? fakePlayer->pushButton(static_cast<PlayerButton>(1)) : fakePlayer->releaseButton(static_cast<PlayerButton>(1));
             if (pl->m_levelSettings->m_platformerMode)
             (inverted ? !realPlayer->m_isGoingLeft : realPlayer->m_isGoingLeft) ? fakePlayer->pushButton(static_cast<PlayerButton>(2)) : fakePlayer->pushButton(static_cast<PlayerButton>(3));
+        }
+
+        if(fakePlayer->m_isOnGround && !t.touchingOrb){
+            t.canHitOrb = false;
         }
         
         fakePlayer->m_totalTime += t.delta;
@@ -269,6 +272,8 @@ void ShowTrajectory::updateMergedColor() {
 void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
     if (!orbIDs.contains(obj->m_objectID)) return;
     
+    double temp;
+    bool targetGravity;
     switch (obj->m_objectID) {
         case 84:
             player->flipGravity(!player->m_isUpsideDown, true);
@@ -281,15 +286,167 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
             }else{
                 player->m_yVelocity = 4.4719999999999995;
             }
+            
+            player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
+            player->m_yVelocity *= (player->m_isUpsideDown ? 1.0f : -1.0f);
 
             t.canHitOrb = false;
             if(player->m_isBird || player->m_isSwing){
                 player->m_stateRingJump = false;
             }
-            player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
-            player->m_yVelocity *= (player->m_isUpsideDown ? 1.0f : -1.0f);
+            if(player->m_isBall || player->m_isSpider || player->m_isRobot){
+                player->m_jumpBuffered = false;
+                player->m_wasJumpBuffered = false;
+            }
             break;
-        
+        case 1022:
+            player->flipGravity(!player->m_isUpsideDown, true);
+
+            if(player->m_isRobot || player->m_isShip || player->m_isBird){
+                player->m_yVelocity = 11.18;
+            }else if(player->m_isBall || player->m_isSpider){
+                player->m_yVelocity = 7.825999866724014;
+            }else if(player->m_isSwing){
+                player->m_yVelocity = 6.708000266551971;
+            }else{
+                player->m_yVelocity = 11.18;
+            }
+
+            player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
+            player->m_yVelocity *= (player->m_isUpsideDown ? -1.0f : 1.0f);
+            
+            t.canHitOrb = false;
+            if(player->m_isBird || player->m_isSwing){
+                player->m_stateRingJump = false;
+            }
+            if(player->m_isBall || player->m_isSpider || player->m_isRobot){
+                player->m_jumpBuffered = false;
+                player->m_wasJumpBuffered = false;
+            }
+            break;
+        case 3004:
+            if(player->m_isSideways){
+                targetGravity = obj->isFacingLeft();
+            }else{
+                targetGravity = obj->isFacingDown();
+            }
+            player->flipGravity(targetGravity,true);
+            player->spiderTestJump(false);
+
+            t.canHitOrb = false;
+            if(player->m_isBird || player->m_isSwing){
+                player->m_stateRingJump = false;
+            }
+            break;
+        case 1330:
+            // ufo and swing is broken idk
+            if(player->m_isShip || player->m_isSwing){
+                player->m_yVelocity = 14;
+            }else if(player->m_isBird){
+                player->m_yVelocity = 11.2;
+            }else if(player->m_isSpider){
+                player->m_yVelocity = 16.5;
+            }else{
+                player->m_yVelocity = 15;
+            }
+
+            player->m_yVelocity *= (player->m_isUpsideDown ? 1.0f : -1.0f);
+
+            t.canHitOrb = false;
+            if(player->m_isBird || player->m_isSwing){
+                player->m_stateRingJump = false;
+            }
+            if(player->m_isBall || player->m_isRobot){
+                player->m_jumpBuffered = false;
+                player->m_wasJumpBuffered = false;
+            }
+            break;
+        case 141:
+            if(player->m_isShip){
+                player->m_yVelocity = 4.1370000000000005;
+            }else if(player->m_isBird){
+                player->m_yVelocity = 4.696;
+            }else if(player->m_isBall){
+                player->m_yVelocity = 6.026299897372723;
+            }else if(player->m_isSpider){
+                player->m_yVelocity = 5.634999904036523;
+            }else if(player->m_isSwing){
+                player->m_yVelocity = 4.830000191926956;
+            }else{
+                player->m_yVelocity = 8.05;
+            }
+
+            player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
+            player->m_yVelocity *= (player->m_isUpsideDown ? -1.0f : 1.0f);
+            
+            t.canHitOrb = false;
+            if(player->m_isBird || player->m_isSwing){
+                player->m_stateRingJump = false;
+            }
+            if(player->m_isBall || player->m_isSpider || player->m_isRobot){
+                player->m_jumpBuffered = false;
+                player->m_wasJumpBuffered = false;
+            }
+            break;
+        case 36:
+            if(player->m_isBall || player->m_isSpider){
+                player->m_yVelocity = 7.825999866724014;
+            }else if(player->m_isRobot){
+                player->m_yVelocity = 10.062;
+            }else if(player->m_isSwing){
+                player->m_yVelocity = 6.708000266551971;
+            }else{
+                player->m_yVelocity = 11.18;
+            }
+
+            player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
+            player->m_yVelocity *= (player->m_isUpsideDown ? -1.0f : 1.0f);
+            
+            t.canHitOrb = false;
+            if(player->m_isBird || player->m_isSwing){
+                player->m_stateRingJump = false;
+            }
+            if(player->m_isBall || player->m_isSpider || player->m_isRobot){
+                player->m_jumpBuffered = false;
+                player->m_wasJumpBuffered = false;
+            }
+            break;
+        case 1333:
+            if(player->m_isBall || player->m_isSpider){
+                player->m_yVelocity = 10.486699821412563;
+            }else if(player->m_isRobot){
+                player->m_yVelocity = 14.31;
+            }else if(player->m_isSwing){
+                player->m_yVelocity = 9.256800367832184;
+            }else if(player->m_isShip){
+                player->m_yVelocity = 11.18;
+            }else if(player->m_isBird){
+                player->m_yVelocity = 11.404;
+            }else{
+                player->m_yVelocity = 15.428;
+            }
+
+            player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
+            player->m_yVelocity *= (player->m_isUpsideDown ? -1.0f : 1.0f);
+            
+            t.canHitOrb = false;
+            if(player->m_isBird || player->m_isSwing){
+                player->m_stateRingJump = false;
+            }
+            if(player->m_isBall || player->m_isSpider || player->m_isRobot){
+                player->m_jumpBuffered = false;
+                player->m_wasJumpBuffered = false;
+            }
+            break;
+        case 1704:
+            player->startDashing(static_cast<DashRingObject*>(obj));
+            t.canHitOrb = false;
+            break;
+        case 1751:
+            player->flipGravity(!player->m_isUpsideDown, true);
+            player->startDashing(static_cast<DashRingObject*>(obj));
+            t.canHitOrb = false;
+            break;
     }
 }
 
@@ -401,6 +558,10 @@ void ShowTrajectory::handlePortal(PlayerObject* player, EffectGameObject* obj) {
         player->m_gravity = 0.961199;
         break;
     case 12:
+        if((player->m_isShip || player->m_isDart) && player->m_holdingButtons[1]){
+            t.canHitOrb = true;
+        }
+
         player->m_lastActivatedPortal = obj;
         player->m_lastPortalPos = obj->getPosition();
     
@@ -414,6 +575,10 @@ void ShowTrajectory::handlePortal(PlayerObject* player, EffectGameObject* obj) {
         player->toggleFlyMode(true,true);
         break;
     case 47:
+        if((player->m_isShip || player->m_isDart) && player->m_holdingButtons[1]){
+            t.canHitOrb = true;
+        }
+
         player->m_lastActivatedPortal = obj;
         player->m_lastPortalPos = obj->getPosition();
     
@@ -435,6 +600,10 @@ void ShowTrajectory::handlePortal(PlayerObject* player, EffectGameObject* obj) {
         player->toggleDartMode(true,true);
         break;
     case 745:
+        if((player->m_isShip || player->m_isDart) && player->m_holdingButtons[1]){
+            t.canHitOrb = true;
+        }
+
         player->m_lastActivatedPortal = obj;
         player->m_lastPortalPos = obj->getPosition();
     
@@ -442,6 +611,10 @@ void ShowTrajectory::handlePortal(PlayerObject* player, EffectGameObject* obj) {
         player->toggleRobotMode(true,true);
         break;
     case 1331:
+        if((player->m_isShip || player->m_isDart) && player->m_holdingButtons[1]){
+            t.canHitOrb = true;
+        }
+
         player->m_lastActivatedPortal = obj;
         player->m_lastPortalPos = obj->getPosition();
     
