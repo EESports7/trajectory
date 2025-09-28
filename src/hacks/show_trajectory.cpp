@@ -112,7 +112,6 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         }
         
         if (i == 0) {
-            fakePlayer->m_stateRingJump = true;
             if(!fakePlayer->m_isOnGround && (fakePlayer->m_stateRingJump || !t.preHold) && hold && !fakePlayer->m_isShip && !fakePlayer->m_isBird && !fakePlayer->m_isDart && !fakePlayer->m_isSwing){
                 // buffer as cube, ball, robot, or spider
                 t.canHitOrb = true;
