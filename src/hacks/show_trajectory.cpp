@@ -81,7 +81,10 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
     fakePlayer->m_spiderAnimationEnabled = false;
     fakePlayer->m_playEffects = false;
 
+    t.preHold = realPlayer->m_holdingButtons[1];
+    t.canHitOrb = false;
     t.cancelTrajectory = false;
+    t.touchingOrb = false;
 
     for (int i = 0; i < t.length; i++) {
         CCPoint prevPos = fakePlayer->getPosition();
@@ -93,6 +96,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
                 t.player1Trajectory[i] = prevPos;
         }
 
+
         fakePlayer->m_collisionLogTop->removeAllObjects();
         fakePlayer->m_collisionLogBottom->removeAllObjects();
         fakePlayer->m_collisionLogLeft->removeAllObjects();
@@ -100,22 +104,33 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
 
         pl->checkCollisions(fakePlayer, t.delta, false);
 
+        
         if (t.cancelTrajectory) {
             fakePlayer->updatePlayerScale();
             drawPlayerHitbox(fakePlayer, t.trajectoryNode());
             break;
         }
-
+        
         if (i == 0) {
+            if(!fakePlayer->m_isOnGround && !t.preHold && hold && !fakePlayer->m_isShip && !fakePlayer->m_isBird && !fakePlayer->m_isDart && !fakePlayer->m_isSwing){
+                // buffer as cube, ball, robot, or spider
+                t.canHitOrb = true;
+            }else if(t.touchingOrb && !t.preHold && hold){
+                // currently touching an orb
+                t.canHitOrb = true;
+                fakePlayer->m_stateRingJump = false;
+            }
+            
             hold ? fakePlayer->pushButton(static_cast<PlayerButton>(1)) : fakePlayer->releaseButton(static_cast<PlayerButton>(1));
             if (pl->m_levelSettings->m_platformerMode)
-                (inverted ? !realPlayer->m_isGoingLeft : realPlayer->m_isGoingLeft) ? fakePlayer->pushButton(static_cast<PlayerButton>(2)) : fakePlayer->pushButton(static_cast<PlayerButton>(3));
+            (inverted ? !realPlayer->m_isGoingLeft : realPlayer->m_isGoingLeft) ? fakePlayer->pushButton(static_cast<PlayerButton>(2)) : fakePlayer->pushButton(static_cast<PlayerButton>(3));
         }
-
+        
         fakePlayer->m_totalTime += t.delta;
         fakePlayer->updateInternalActions(t.delta);
         fakePlayer->update(t.delta);
         fakePlayer->updateRotation(t.delta);
+        
 
         cocos2d::ccColor4F color = hold ? t.color1 : t.color2;
 
@@ -251,22 +266,32 @@ void ShowTrajectory::updateMergedColor() {
     color3 = ccc4f(1,1,0,1);
 }
 
-// void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
-//     if (!orbIDs.contains(obj->m_objectID)) return;
+void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
+    if (!orbIDs.contains(obj->m_objectID)) return;
     
-//     double yVel = player->m_yVelocity;
-//     int32_t flipMod = 
-//     switch (obj->m_objectID) {
-//         case 84:
-//             yVel *= 0.8;
+    switch (obj->m_objectID) {
+        case 84:
+            player->flipGravity(!player->m_isUpsideDown, true);
+            if(player->m_isRobot || player->m_isShip || player->m_isBird){
+                player->m_yVelocity = 4.4719999999999995;
+            }else if(player->m_isBall || player->m_isSpider){
+                player->m_yVelocity = 3.1303999466896055;
+            }else if(player->m_isSwing){
+                player->m_yVelocity = 2.6832001066207884;
+            }else{
+                player->m_yVelocity = 4.4719999999999995;
+            }
 
-//             player->setYVelocity()
-//             player->flipGravity(!player->m_isUpsideDown, true);
-
-//         break;
+            t.canHitOrb = false;
+            if(player->m_isBird || player->m_isSwing){
+                player->m_stateRingJump = false;
+            }
+            player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
+            player->m_yVelocity *= (player->m_isUpsideDown ? 1.0f : -1.0f);
+            break;
         
-//     }
-// }
+    }
+}
 
 void ShowTrajectory::handlePad(PlayerObject* player, EffectGameObject* obj) {
     if (!padIDs.contains(obj->m_objectID)) return;
@@ -604,6 +629,11 @@ class $modify(GJBaseGameLayer) {
     void playerTouchedRing(PlayerObject * p0, RingObject * p1) {
         if (!t.creatingTrajectory){
             GJBaseGameLayer::playerTouchedRing(p0, p1);
+        }else{
+            t.touchingOrb = true;
+            if(!p0->isFlying() && !p1->m_claimTouch){
+                p0->ringJump(p1,0);
+            }
         }
     }
 
@@ -677,8 +707,34 @@ class $modify(PlayerObject) {
     }
 
     void ringJump(RingObject * p0, bool p1) {
-        if (!t.creatingTrajectory)
+        if (!t.creatingTrajectory){
             PlayerObject::ringJump(p0, p1);
+        }else{
+            if(t.canHitOrb && !this->m_isDashing){
+                int p1Contains = std::count(t.p1Collided.begin(),t.p1Collided.end(),p0);
+                int p2Contains = std::count(t.p2Collided.begin(),t.p2Collided.end(),p0);
+    
+                if(!this->m_isSecondPlayer){
+                    if(t.fakePlayer1 == this && p1Contains == 0 && !(p0->m_activatedByPlayer1)){
+                        ShowTrajectory::handleOrb(this,p0);
+                        t.p1Collided.push_back(p0);
+        
+                    }else if(t.fakePlayer2 == this && p2Contains == 0 && !(p0->m_activatedByPlayer1)){
+                        ShowTrajectory::handleOrb(this,p0);
+                        t.p2Collided.push_back(p0);
+                    }
+                }else{
+                    if(t.fakePlayer1 == this && p1Contains == 0 && !(p0->m_activatedByPlayer2)){
+                        ShowTrajectory::handleOrb(this,p0);
+                        t.p1Collided.push_back(p0);
+        
+                    }else if(t.fakePlayer2 == this && p2Contains == 0 && !(p0->m_activatedByPlayer2)){
+                        ShowTrajectory::handleOrb(this,p0);
+                        t.p2Collided.push_back(p0);
+                    }
+                }
+            }
+        }
     }
 };
 
