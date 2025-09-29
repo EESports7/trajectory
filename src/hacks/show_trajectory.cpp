@@ -133,7 +133,7 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
         fakePlayer->updateInternalActions(t.delta);
         fakePlayer->update(t.delta);
         fakePlayer->updateRotation(t.delta);
-        
+        fakePlayer->m_shipRotation = fakePlayer->getPosition();
 
         cocos2d::ccColor4F color = hold ? t.color1 : t.color2;
 
