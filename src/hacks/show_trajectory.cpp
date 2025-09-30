@@ -339,7 +339,6 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
             }
             break;
         case 1330:
-            // ufo and swing is broken idk
             if(player->m_isShip || player->m_isSwing){
                 player->m_yVelocity = 14;
             }else if(player->m_isBird){
@@ -351,6 +350,7 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
             }
 
             player->m_yVelocity *= (player->m_isUpsideDown ? 1.0f : -1.0f);
+            player->m_isAccelerating = true;
 
             t.canHitOrb = false;
             if(player->m_isBird || player->m_isSwing){
