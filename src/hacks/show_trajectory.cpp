@@ -274,6 +274,8 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
     
     double temp;
     bool targetGravity;
+
+    player->m_isAccelerating = true;
     switch (obj->m_objectID) {
         case 84:
             player->flipGravity(!player->m_isUpsideDown, true);
@@ -350,7 +352,6 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
             }
 
             player->m_yVelocity *= (player->m_isUpsideDown ? 1.0f : -1.0f);
-            player->m_isAccelerating = true;
 
             t.canHitOrb = false;
             if(player->m_isBird || player->m_isSwing){
