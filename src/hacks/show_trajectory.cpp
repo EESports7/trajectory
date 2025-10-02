@@ -22,6 +22,35 @@ $execute {
 
 };
 
+constexpr int32_t toInt(float n){ 
+    if(n == 0.7f){
+        return 7;
+    }else if(n == 0.9f){
+        return 9;
+    }else if(n == 1.1f){
+        return 11;
+    }else if(n == 1.3f){
+        return 13;
+    }else if(n == 1.6f){
+        return 16;
+    }
+    return 0;
+}
+constexpr int32_t toInt(double n){ 
+    if(n == 0.7){
+        return 7;
+    }else if(n == 0.9){
+        return 9;
+    }else if(n == 1.1){
+        return 11;
+    }else if(n == 1.3){
+        return 13;
+    }else if(n == 1.6){
+        return 16;
+    }
+    return 0;
+}
+
 void ShowTrajectory::trajectoryOff() {
     if (t.trajectoryNode()) {
         t.trajectoryNode()->clear();
@@ -277,16 +306,47 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
 
     player->m_isAccelerating = true;
     switch (obj->m_objectID) {
-        case 84:
+        case 84: // blue orb
             player->flipGravity(!player->m_isUpsideDown, true);
-            if(player->m_isRobot || player->m_isShip || player->m_isBird){
-                player->m_yVelocity = 4.4719999999999995;
-            }else if(player->m_isBall || player->m_isSpider){
-                player->m_yVelocity = 3.1303999466896055;
-            }else if(player->m_isSwing){
-                player->m_yVelocity = 2.6832001066207884;
-            }else{
-                player->m_yVelocity = 4.4719999999999995;
+
+            switch(toInt(player->m_playerSpeed)){
+                case toInt(0.7):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 2.973599949359894;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 2.5488001012802126;
+                    }else{
+                        player->m_yVelocity = 4.248;
+                    }
+                    break;
+                case toInt(0.9):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 3.1303999466896055;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 2.6832001066207884;
+                    }else{
+                        player->m_yVelocity = 4.4719999999999995;
+                    }
+                    break;
+                case toInt(1.1):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 3.197599945545196;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 2.740800108909607;
+                    }else{
+                        player->m_yVelocity = 4.568;
+                    }
+                    break;
+                case toInt(1.3):
+                case toInt(1.6):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 3.144399946451187;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 2.6952001070976257;
+                    }else{
+                        player->m_yVelocity = 4.492;
+                    }
+                    break;
             }
             
             player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
@@ -301,17 +361,55 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
                 player->m_wasJumpBuffered = false;
             }
             break;
-        case 1022:
+        case 1022: // green orb
             player->flipGravity(!player->m_isUpsideDown, true);
 
-            if(player->m_isRobot || player->m_isShip || player->m_isBird){
-                player->m_yVelocity = 11.18;
-            }else if(player->m_isBall || player->m_isSpider){
-                player->m_yVelocity = 7.825999866724014;
-            }else if(player->m_isSwing){
-                player->m_yVelocity = 6.708000266551971;
-            }else{
-                player->m_yVelocity = 11.18;
+            switch(toInt(player->m_playerSpeed)){
+                case toInt(0.7):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 7.433999873399734;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 6.372000253200531;
+                    }else if(player->m_isShip){
+                        player->m_yVelocity = 7.434;
+                    }else{
+                        player->m_yVelocity = 10.62;
+                    }
+                    break;
+                case toInt(0.9):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 7.825999866724014;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 6.708000266551971;
+                    }else if(player->m_isShip){
+                        player->m_yVelocity = 7.826;
+                    }else{
+                        player->m_yVelocity = 11.18;
+                    }
+                    break;
+                case toInt(1.1):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 7.993999863862991;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 6.852000272274017;
+                    }else if(player->m_isShip){
+                        player->m_yVelocity = 7.994;
+                    }else{
+                        player->m_yVelocity = 11.42;
+                    }
+                    break;
+                case toInt(1.3):
+                case toInt(1.6):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 7.860999866127968;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 6.738000267744065;
+                    }else if(player->m_isShip){
+                        player->m_yVelocity = 7.861;
+                    }else{
+                        player->m_yVelocity = 11.23;
+                    }
+                    break;
             }
 
             player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
@@ -326,7 +424,7 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
                 player->m_wasJumpBuffered = false;
             }
             break;
-        case 3004:
+        case 3004: // spider orb
             if(player->m_isSideways){
                 targetGravity = obj->isFacingLeft();
             }else{
@@ -340,7 +438,7 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
                 player->m_stateRingJump = false;
             }
             break;
-        case 1330:
+        case 1330: // black orb
             if(player->m_isShip || player->m_isSwing){
                 player->m_yVelocity = 14;
             }else if(player->m_isBird){
@@ -362,19 +460,69 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
                 player->m_wasJumpBuffered = false;
             }
             break;
-        case 141:
-            if(player->m_isShip){
-                player->m_yVelocity = 4.1370000000000005;
-            }else if(player->m_isBird){
-                player->m_yVelocity = 4.696;
-            }else if(player->m_isBall){
-                player->m_yVelocity = 6.026299897372723;
-            }else if(player->m_isSpider){
-                player->m_yVelocity = 5.634999904036523;
-            }else if(player->m_isSwing){
-                player->m_yVelocity = 4.830000191926956;
-            }else{
-                player->m_yVelocity = 8.05;
+        case 141: // pink orb
+            switch(toInt(player->m_playerSpeed)){
+                case toInt(0.7):
+                    if(player->m_isShip){
+                        player->m_yVelocity = 3.9290000000000003;
+                    }else if(player->m_isBall){
+                        player->m_yVelocity = 5.723899902522564;
+                    }else if(player->m_isBird){
+                        player->m_yVelocity = 4.46;
+                    }else if(player->m_isSpider){
+                        player->m_yVelocity = 5.352199908852577;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 4.587600182294845;
+                    }else{
+                        player->m_yVelocity = 7.646;
+                    }
+                    break;
+                case toInt(0.9):
+                    if(player->m_isShip){
+                        player->m_yVelocity = 4.1370000000000005;
+                    }else if(player->m_isBall){
+                        player->m_yVelocity = 6.026299897372723;
+                    }else if(player->m_isBird){
+                        player->m_yVelocity = 4.696;
+                    }else if(player->m_isSpider){
+                        player->m_yVelocity = 5.634999904036523;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 4.830000191926956;
+                    }else{
+                        player->m_yVelocity = 8.05;
+                    }
+                    break;
+                case toInt(1.1):
+                    if(player->m_isShip){
+                        player->m_yVelocity = 4.225;
+                    }else if(player->m_isBall){
+                        player->m_yVelocity = 6.155099895179271;
+                    }else if(player->m_isBird){
+                        player->m_yVelocity = 4.796;
+                    }else if(player->m_isSpider){
+                        player->m_yVelocity = 5.755399901986122;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 4.933200196027755;
+                    }else{
+                        player->m_yVelocity = 8.222;
+                    }
+                    break;
+                case toInt(1.3):
+                case toInt(1.6):
+                    if(player->m_isShip){
+                        player->m_yVelocity = 4.155;
+                    }else if(player->m_isBall){
+                        player->m_yVelocity = 6.052899896919728;
+                    }else if(player->m_isBird){
+                        player->m_yVelocity = 4.717;
+                    }else if(player->m_isSpider){
+                        player->m_yVelocity = 5.660199903607369;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 4.851600192785264;
+                    }else{
+                        player->m_yVelocity = 8.086;
+                    }
+                    break;
             }
 
             player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
@@ -389,15 +537,45 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
                 player->m_wasJumpBuffered = false;
             }
             break;
-        case 36:
-            if(player->m_isBall || player->m_isSpider){
-                player->m_yVelocity = 7.825999866724014;
-            }else if(player->m_isRobot){
-                player->m_yVelocity = 10.062;
-            }else if(player->m_isSwing){
-                player->m_yVelocity = 6.708000266551971;
-            }else{
-                player->m_yVelocity = 11.18;
+        case 36: // yellow orb
+            switch(toInt(player->m_playerSpeed)){
+                case toInt(0.7):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 7.433999873399734;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 6.372000253200531;
+                    }else{
+                        player->m_yVelocity = 10.62;
+                    }
+                    break;
+                case toInt(0.9):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 7.825999866724014;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 6.708000266551971;
+                    }else{
+                        player->m_yVelocity = 11.18;
+                    }
+                    break;
+                case toInt(1.1):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 7.993999863862991;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 6.852000272274017;
+                    }else{
+                        player->m_yVelocity = 11.42;
+                    }
+                    break;
+                case toInt(1.3):
+                case toInt(1.6):
+                    if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 7.860999866127968;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 6.738000267744065;
+                    }else{
+                        player->m_yVelocity = 11.23;
+                    }
+                    break;
             }
 
             player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
@@ -412,19 +590,69 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
                 player->m_wasJumpBuffered = false;
             }
             break;
-        case 1333:
-            if(player->m_isBall || player->m_isSpider){
-                player->m_yVelocity = 10.486699821412563;
-            }else if(player->m_isRobot){
-                player->m_yVelocity = 14.31;
-            }else if(player->m_isSwing){
-                player->m_yVelocity = 9.256800367832184;
-            }else if(player->m_isShip){
-                player->m_yVelocity = 11.18;
-            }else if(player->m_isBird){
-                player->m_yVelocity = 11.404;
-            }else{
-                player->m_yVelocity = 15.428;
+        case 1333: // red orb
+            switch(toInt(player->m_playerSpeed)){
+                case toInt(0.7):
+                    if(player->m_isShip){
+                        player->m_yVelocity = 10.62;
+                    }else if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 9.96169983035326;
+                    }else if(player->m_isBird){
+                        player->m_yVelocity = 10.832;
+                    }else if(player->m_isRobot){
+                        player->m_yVelocity = 13.594;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 8.79360034942627;
+                    }else{
+                        player->m_yVelocity = 14.656;
+                    }
+                    break;
+                case toInt(0.9):
+                    if(player->m_isShip){
+                        player->m_yVelocity = 11.18;
+                    }else if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 10.486699821412563;
+                    }else if(player->m_isBird){
+                        player->m_yVelocity = 11.404;
+                    }else if(player->m_isRobot){
+                        player->m_yVelocity = 14.31;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 9.256800367832184;
+                    }else{
+                        player->m_yVelocity = 15.428;
+                    }
+                    break;
+                case toInt(1.1):
+                    if(player->m_isShip){
+                        player->m_yVelocity = 11.42;
+                    }else if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 10.712099817574025;
+                    }else if(player->m_isBird){
+                        player->m_yVelocity = 11.648;
+                    }else if(player->m_isRobot){
+                        player->m_yVelocity = 14.618;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 9.456000375747681;
+                    }else{
+                        player->m_yVelocity = 15.76;
+                    }
+                    break;
+                case toInt(1.3):
+                case toInt(1.6):
+                    if(player->m_isShip){
+                        player->m_yVelocity = 11.23;
+                    }else if(player->m_isBall || player->m_isSpider){
+                        player->m_yVelocity = 10.533599820613862;
+                    }else if(player->m_isBird){
+                        player->m_yVelocity = 11.455;
+                    }else if(player->m_isRobot){
+                        player->m_yVelocity = 14.374;
+                    }else if(player->m_isSwing){
+                        player->m_yVelocity = 9.298200369477271;
+                    }else{
+                        player->m_yVelocity = 15.497;
+                    }
+                    break;
             }
 
             player->m_yVelocity *= (player->m_vehicleSize < 1.0f ? 0.8f : 1.0f);
@@ -439,11 +667,11 @@ void ShowTrajectory::handleOrb(PlayerObject* player, EffectGameObject* obj){
                 player->m_wasJumpBuffered = false;
             }
             break;
-        case 1704:
+        case 1704: // green dash orb
             player->startDashing(static_cast<DashRingObject*>(obj));
             t.canHitOrb = false;
             break;
-        case 1751:
+        case 1751: // pink dash orb
             player->flipGravity(!player->m_isUpsideDown, true);
             player->startDashing(static_cast<DashRingObject*>(obj));
             t.canHitOrb = false;
