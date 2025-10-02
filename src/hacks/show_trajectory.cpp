@@ -139,6 +139,10 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
             break;
         }
         
+        if(fakePlayer->m_isOnGround && !t.touchingOrb){
+            t.canHitOrb = false;
+        }
+        
         if (i == 0) {
             if(!fakePlayer->m_isOnGround && (fakePlayer->m_stateRingJump || !t.preHold) && hold && !fakePlayer->m_isShip && !fakePlayer->m_isBird && !fakePlayer->m_isDart && !fakePlayer->m_isSwing){
                 // buffer as cube, ball, robot, or spider
@@ -152,10 +156,6 @@ void ShowTrajectory::createTrajectory(PlayLayer* pl, PlayerObject* fakePlayer, P
             hold ? fakePlayer->pushButton(static_cast<PlayerButton>(1)) : fakePlayer->releaseButton(static_cast<PlayerButton>(1));
             if (pl->m_levelSettings->m_platformerMode)
             (inverted ? !realPlayer->m_isGoingLeft : realPlayer->m_isGoingLeft) ? fakePlayer->pushButton(static_cast<PlayerButton>(2)) : fakePlayer->pushButton(static_cast<PlayerButton>(3));
-        }
-
-        if(fakePlayer->m_isOnGround && !t.touchingOrb){
-            t.canHitOrb = false;
         }
         
         fakePlayer->m_totalTime += t.delta;
